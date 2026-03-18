@@ -15,6 +15,7 @@ import PackageManagement from "./pages/admin/PackageManagement.tsx";
 import AddonManagement from "./pages/admin/AddonManagement.tsx";
 import TimeSlotManagement from "./pages/admin/TimeSlotManagement.tsx";
 import SiteSettings from "./pages/admin/SiteSettings.tsx";
+import AdminManagement from "./pages/admin/AdminManagement.tsx";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="addons" element={<AddonManagement />} />
               <Route path="time-slots" element={<TimeSlotManagement />} />
               <Route path="settings" element={<SiteSettings />} />
+              <Route path="admins" element={<AdminManagement />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -1,4 +1,4 @@
-import { Phone, ArrowDown, Shield, Clock, Sparkles } from "lucide-react";
+import { Phone, ArrowDown, Shield, Clock, Sparkles, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSiteSettings } from "@/hooks/use-landing-data";
 
@@ -16,28 +16,39 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-primary via-primary to-primary/90 pt-20 pb-28 overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.03] rounded-full" />
+    <section className="relative gradient-hero-bg pt-24 pb-32 overflow-hidden">
+      {/* Animated decorative orbs */}
+      <div className="absolute top-10 right-[10%] w-80 h-80 bg-white/[0.07] rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-20 left-[5%] w-64 h-64 bg-white/[0.05] rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-white/[0.02] rounded-full" />
+      
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
 
       <div className="container relative z-10">
-        <div className="max-w-2xl mx-auto text-center space-y-6 animate-fade-in-up">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight">
+        <div className="max-w-2xl mx-auto text-center space-y-7 animate-fade-in-up">
+          {/* Trust badge */}
+          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md rounded-full px-5 py-2 border border-white/20">
+            <Star className="h-4 w-4 text-accent fill-accent" />
+            <span className="text-sm text-white/90 font-medium">ঢাকার #১ সোফা ক্লিনিং সার্ভিস</span>
+          </div>
+
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-[1.15] tracking-tight">
             {settings?.hero_headline || "আপনার সোফা হোক ঝকঝকে পরিষ্কার"}
           </h1>
-          <p className="text-lg md:text-xl text-white/90 font-medium">
+          <p className="text-lg md:text-xl text-white/85 font-medium max-w-xl mx-auto leading-relaxed">
             {settings?.hero_subheadline || "ঢাকায় ঘরে বসেই প্রফেশনাল সোফা ক্লিনিং"}
           </p>
-          <p className="text-base text-white/70 max-w-lg mx-auto">
-            {settings?.hero_explainer || ""}
-          </p>
+          {settings?.hero_explainer && (
+            <p className="text-base text-white/60 max-w-lg mx-auto">
+              {settings.hero_explainer}
+            </p>
+          )}
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
             <Button
               onClick={scrollToBooking}
-              className="bg-white text-primary hover:bg-white/90 hover:scale-105 shadow-elevated text-lg font-bold px-8 py-3 h-auto rounded-full transition-all duration-300"
+              className="bg-white text-primary hover:bg-white/95 hover:scale-105 text-lg font-bold px-10 py-4 h-auto rounded-full transition-all duration-300 glow-primary shadow-xl"
             >
               এখনই বুক করুন
               <ArrowDown className="h-5 w-5 ml-1 animate-bounce" />
@@ -45,19 +56,19 @@ export default function HeroSection() {
           </div>
 
           {/* Highlights */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-6">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
             {highlights.map((h, i) => (
-              <div key={i} className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
-                <h.icon className="h-4 w-4 text-white" />
-                <span className="text-sm text-white font-medium">{h.text}</span>
+              <div key={i} className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2.5 border border-white/10 hover:bg-white/15 transition-colors duration-300">
+                <h.icon className="h-4 w-4 text-white/90" />
+                <span className="text-sm text-white/90 font-medium">{h.text}</span>
               </div>
             ))}
           </div>
 
           {/* Contact info */}
           {settings?.helpline_number && (
-            <div className="flex items-center justify-center gap-2 text-sm pt-2">
-              <a href={`tel:${settings.helpline_number}`} className="flex items-center gap-1.5 text-white/80 font-medium hover:text-white transition-colors">
+            <div className="flex items-center justify-center gap-2 text-sm pt-1">
+              <a href={`tel:${settings.helpline_number}`} className="flex items-center gap-1.5 text-white/70 font-medium hover:text-white transition-colors">
                 <Phone className="h-4 w-4" /> {settings.helpline_number}
               </a>
             </div>
@@ -67,8 +78,8 @@ export default function HeroSection() {
 
       {/* Wave divider */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-        <svg viewBox="0 0 1440 80" className="relative block w-full h-16">
-          <path fill="hsl(var(--surface-grey))" d="M0,40 C360,80 720,0 1440,40 L1440,80 L0,80 Z" />
+        <svg viewBox="0 0 1440 100" className="relative block w-full h-20" preserveAspectRatio="none">
+          <path fill="hsl(var(--surface-grey))" d="M0,50 C240,90 480,10 720,50 C960,90 1200,20 1440,50 L1440,100 L0,100 Z" />
         </svg>
       </div>
     </section>
