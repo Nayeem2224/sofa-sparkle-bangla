@@ -7,51 +7,54 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 220 20% 14%;
+    --foreground: 222 25% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 14%;
+    --card-foreground: 222 25% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 14%;
+    --popover-foreground: 222 25% 12%;
 
-    --primary: 350 85% 48%;
+    --primary: 348 88% 46%;
     --primary-foreground: 0 0% 100%;
+    --primary-glow: 340 75% 58%;
 
-    --secondary: 350 60% 95%;
-    --secondary-foreground: 350 85% 40%;
+    --secondary: 348 65% 96%;
+    --secondary-foreground: 348 88% 38%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 220 16% 96%;
+    --muted-foreground: 220 12% 50%;
 
-    --accent: 350 85% 48%;
+    --accent: 26 92% 56%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 14% 90%;
-    --input: 220 14% 90%;
-    --ring: 350 85% 48%;
+    --border: 220 16% 91%;
+    --input: 220 16% 91%;
+    --ring: 348 88% 46%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --surface-grey: 220 14% 96%;
-    --surface-aqua: 350 40% 97%;
+    --surface-grey: 220 16% 97%;
+    --surface-aqua: 348 45% 97%;
     --surface-warm: 30 60% 97%;
-    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
-    --shadow-nav: 0 2px 16px rgba(0, 0, 0, 0.08);
-    --shadow-elevated: 0 12px 40px rgba(0, 0, 0, 0.12);
+    --shadow-card: 0 4px 24px -4px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0,0,0,0.04);
+    --shadow-nav: 0 1px 12px rgba(0, 0, 0, 0.06);
+    --shadow-elevated: 0 20px 60px -12px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0,0,0,0.05);
+    --gradient-hero: linear-gradient(135deg, hsl(348 88% 46%), hsl(340 75% 58%), hsl(20 85% 55%));
+    --gradient-warm: linear-gradient(135deg, hsl(348 88% 46%), hsl(26 92% 56%));
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 350 85% 48%;
+    --sidebar-primary: 348 88% 46%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 350 40% 97%;
-    --sidebar-accent-foreground: 350 85% 40%;
-    --sidebar-border: 220 14% 90%;
-    --sidebar-ring: 350 85% 48%;
+    --sidebar-accent: 348 45% 97%;
+    --sidebar-accent-foreground: 348 88% 38%;
+    --sidebar-border: 220 16% 91%;
+    --sidebar-ring: 348 88% 46%;
   }
 }
 
@@ -85,7 +88,17 @@
 
   .gradient-text {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(350 85% 48%), hsl(350 75% 60%));
+    background-image: var(--gradient-warm);
+  }
+
+  .gradient-hero-bg {
+    background: var(--gradient-hero);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 }
 
@@ -116,6 +129,37 @@
   animation: fade-in-up 0.6s ease-out forwards;
 }
 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Shimmer effect */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.1) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
 /* Staggered children animation */
 .stagger-children > * {
   opacity: 0;
@@ -127,3 +171,8 @@
 .stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
 .stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
 .stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+
+/* Glow effect */
+.glow-primary {
+  box-shadow: 0 0 30px -5px hsl(348 88% 46% / 0.3);
+}
