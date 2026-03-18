@@ -23,6 +23,7 @@ import {
   LogOut,
   Loader2,
   Gift,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -32,6 +33,7 @@ const navItems = [
   { title: "প্যাকেজসমূহ", url: "/admin/packages", icon: Package },
   { title: "অ্যাড-অনসমূহ", url: "/admin/addons", icon: Gift },
   { title: "টাইম স্লট", url: "/admin/time-slots", icon: Clock },
+  { title: "অ্যাডমিন", url: "/admin/admins", icon: Users },
   { title: "সাইট সেটিংস", url: "/admin/settings", icon: Settings },
 ];
 
