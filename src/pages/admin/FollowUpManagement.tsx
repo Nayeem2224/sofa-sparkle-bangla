@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Bell, Search, Loader2, Phone, MessageCircle, CheckCircle2, Clock, AlertTriangle } from "lucide-react";
-import { format, differenceInDays, isPast } from "date-fns";
+import { Bell, Search, Loader2, Phone, MessageCircle, CheckCircle2, Clock, AlertTriangle, Edit, Save, AlarmClock } from "lucide-react";
+import { differenceInDays, isPast, format } from "date-fns";
 
 const statusLabels: Record<string, string> = {
   pending: "পেন্ডিং",
@@ -32,6 +34,11 @@ export default function FollowUpManagement() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedFollowUp, setSelectedFollowUp] = useState<any>(null);
   const [noteText, setNoteText] = useState("");
+  const [editing, setEditing] = useState(false);
+  const [editFields, setEditFields] = useState({ customer_name: "", phone: "", follow_up_date: "" });
+
+  // Alarm sound for urgent follow-ups
+  const [alarmShown, setAlarmShown] = useState(false);
 
   const { data: followUps, isLoading } = useQuery({
     queryKey: ["admin-follow-ups"],
@@ -60,6 +67,23 @@ export default function FollowUpManagement() {
     onError: () => toast.error("আপডেট করতে সমস্যা হয়েছে"),
   });
 
+  const editMutation = useMutation({
+    mutationFn: async ({ id, fields }: { id: string; fields: typeof editFields }) => {
+      const { error } = await supabase.from("follow_ups").update({
+        customer_name: fields.customer_name,
+        phone: fields.phone,
+        follow_up_date: fields.follow_up_date,
+      }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-follow-ups"] });
+      toast.success("তথ্য আপডেট হয়েছে");
+      setEditing(false);
+    },
+    onError: () => toast.error("আপডেট করতে সমস্যা হয়েছে"),
+  });
+
   const filtered = followUps?.filter((f) => {
     const matchSearch = !search || f.customer_name.toLowerCase().includes(search.toLowerCase()) || f.phone.includes(search);
     const matchStatus = statusFilter === "all" || f.status === statusFilter;
@@ -72,6 +96,34 @@ export default function FollowUpManagement() {
     const daysUntil = differenceInDays(new Date(f.follow_up_date), new Date());
     return daysUntil <= 7;
   }).length || 0;
+
+  // Alarm notification for urgent follow-ups
+  useEffect(() => {
+    if (urgentCount > 0 && !alarmShown) {
+      setAlarmShown(true);
+      toast.warning(`⏰ ${urgentCount} টি জরুরি ফলো-আপ আছে! এখনই যোগাযোগ করুন।`, {
+        duration: 8000,
+        icon: <AlarmClock className="h-5 w-5 text-destructive" />,
+      });
+    }
+  }, [urgentCount, alarmShown]);
+
+  const openDetail = (f: any) => {
+    setSelectedFollowUp(f);
+    setNoteText(f.notes || "");
+    setEditing(false);
+    setEditFields({
+      customer_name: f.customer_name,
+      phone: f.phone,
+      follow_up_date: f.follow_up_date,
+    });
+  };
+
+  // Stats
+  const totalFollowUps = followUps?.length || 0;
+  const pendingCount = followUps?.filter((f) => f.status === "pending").length || 0;
+  const contactedCount = followUps?.filter((f) => f.status === "contacted").length || 0;
+  const rebookedCount = followUps?.filter((f) => f.status === "booked").length || 0;
 
   return (
     <div className="space-y-6">
@@ -89,6 +141,34 @@ export default function FollowUpManagement() {
         )}
       </div>
 
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Card className="rounded-2xl border-border/50">
+          <CardContent className="p-4">
+            <p className="text-xs text-muted-foreground">মোট</p>
+            <p className="text-2xl font-bold">{totalFollowUps}</p>
+          </CardContent>
+        </Card>
+        <Card className="rounded-2xl border-border/50">
+          <CardContent className="p-4">
+            <p className="text-xs text-muted-foreground">পেন্ডিং</p>
+            <p className="text-2xl font-bold text-yellow-600">{pendingCount}</p>
+          </CardContent>
+        </Card>
+        <Card className="rounded-2xl border-border/50">
+          <CardContent className="p-4">
+            <p className="text-xs text-muted-foreground">যোগাযোগ হয়েছে</p>
+            <p className="text-2xl font-bold text-blue-600">{contactedCount}</p>
+          </CardContent>
+        </Card>
+        <Card className="rounded-2xl border-border/50">
+          <CardContent className="p-4">
+            <p className="text-xs text-muted-foreground">পুনরায় বুক</p>
+            <p className="text-2xl font-bold text-green-600">{rebookedCount}</p>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
@@ -96,9 +176,7 @@ export default function FollowUpManagement() {
           <Input placeholder="নাম বা ফোন দিয়ে খুঁজুন..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10 h-11 rounded-xl" />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-48 h-11 rounded-xl">
-            <SelectValue placeholder="স্ট্যাটাস" />
-          </SelectTrigger>
+          <SelectTrigger className="w-full sm:w-48 h-11 rounded-xl"><SelectValue placeholder="স্ট্যাটাস" /></SelectTrigger>
           <SelectContent className="rounded-xl">
             <SelectItem value="all">সকল</SelectItem>
             {Object.entries(statusLabels).map(([k, v]) => (
@@ -111,9 +189,7 @@ export default function FollowUpManagement() {
       {/* Table */}
       <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
         {isLoading ? (
-          <div className="flex items-center justify-center p-12">
-            <Loader2 className="h-6 w-6 animate-spin text-primary" />
-          </div>
+          <div className="flex items-center justify-center p-12"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -125,14 +201,12 @@ export default function FollowUpManagement() {
                   <TableHead>ফলো-আপ তারিখ</TableHead>
                   <TableHead>অবস্থা</TableHead>
                   <TableHead>স্ট্যাটাস</TableHead>
-                  <TableHead className="w-32">অ্যাকশন</TableHead>
+                  <TableHead className="w-36">অ্যাকশন</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filtered?.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">কোনো ফলো-আপ নেই</TableCell>
-                  </TableRow>
+                  <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">কোনো ফলো-আপ নেই</TableCell></TableRow>
                 )}
                 {filtered?.map((f) => {
                   const daysUntil = differenceInDays(new Date(f.follow_up_date), new Date());
@@ -144,9 +218,7 @@ export default function FollowUpManagement() {
                       <TableCell className="font-medium">{f.customer_name}</TableCell>
                       <TableCell>{f.phone}</TableCell>
                       <TableCell>{f.service_date}</TableCell>
-                      <TableCell className="font-semibold">
-                        {f.follow_up_date}
-                      </TableCell>
+                      <TableCell className="font-semibold">{f.follow_up_date}</TableCell>
                       <TableCell>
                         {isOverdue ? (
                           <Badge variant="outline" className="bg-destructive/10 text-destructive border-destructive/30 text-xs">
@@ -168,7 +240,7 @@ export default function FollowUpManagement() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1">
                           <a href={`https://wa.me/88${f.phone}`} target="_blank" rel="noopener noreferrer">
                             <Button variant="ghost" size="icon" className="h-8 w-8 text-[#25D366] hover:bg-[#25D366]/10">
                               <MessageCircle className="h-4 w-4" />
@@ -179,8 +251,8 @@ export default function FollowUpManagement() {
                               <Phone className="h-4 w-4" />
                             </Button>
                           </a>
-                          <Button variant="ghost" size="sm" className="text-xs" onClick={() => { setSelectedFollowUp(f); setNoteText(f.notes || ""); }}>
-                            আপডেট
+                          <Button variant="ghost" size="sm" className="text-xs" onClick={() => openDetail(f)}>
+                            <Edit className="h-3 w-3 mr-1" /> আপডেট
                           </Button>
                         </div>
                       </TableCell>
@@ -195,16 +267,45 @@ export default function FollowUpManagement() {
 
       {/* Update Dialog */}
       <Dialog open={!!selectedFollowUp} onOpenChange={(o) => !o && setSelectedFollowUp(null)}>
-        <DialogContent className="max-w-md rounded-2xl">
+        <DialogContent className="max-w-md rounded-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>ফলো-আপ আপডেট</DialogTitle>
+            <DialogTitle className="flex items-center gap-2">
+              ফলো-আপ আপডেট
+              <Button variant="ghost" size="sm" onClick={() => setEditing(!editing)} className="ml-auto">
+                <Edit className="h-4 w-4 mr-1" /> {editing ? "বাতিল" : "এডিট"}
+              </Button>
+            </DialogTitle>
           </DialogHeader>
           {selectedFollowUp && (
             <div className="space-y-4">
-              <div className="text-sm space-y-1">
-                <p><span className="text-muted-foreground">গ্রাহক:</span> <strong>{selectedFollowUp.customer_name}</strong></p>
-                <p><span className="text-muted-foreground">ফোন:</span> <strong>{selectedFollowUp.phone}</strong></p>
-              </div>
+              {editing ? (
+                <div className="space-y-3">
+                  <div className="space-y-1">
+                    <Label className="text-xs">গ্রাহকের নাম</Label>
+                    <Input value={editFields.customer_name} onChange={(e) => setEditFields({ ...editFields, customer_name: e.target.value })} className="rounded-xl" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">ফোন</Label>
+                    <Input value={editFields.phone} onChange={(e) => setEditFields({ ...editFields, phone: e.target.value })} className="rounded-xl" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">ফলো-আপ তারিখ</Label>
+                    <Input type="date" value={editFields.follow_up_date} onChange={(e) => setEditFields({ ...editFields, follow_up_date: e.target.value })} className="rounded-xl" />
+                  </div>
+                  <Button onClick={() => editMutation.mutate({ id: selectedFollowUp.id, fields: editFields })} disabled={editMutation.isPending} className="rounded-xl">
+                    {editMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Save className="h-4 w-4 mr-1" />}
+                    সেভ করুন
+                  </Button>
+                </div>
+              ) : (
+                <div className="text-sm space-y-1.5">
+                  <p><span className="text-muted-foreground">গ্রাহক:</span> <strong>{selectedFollowUp.customer_name}</strong></p>
+                  <p><span className="text-muted-foreground">ফোন:</span> <strong>{selectedFollowUp.phone}</strong></p>
+                  <p><span className="text-muted-foreground">সার্ভিসের তারিখ:</span> <strong>{selectedFollowUp.service_date}</strong></p>
+                  <p><span className="text-muted-foreground">ফলো-আপ তারিখ:</span> <strong>{selectedFollowUp.follow_up_date}</strong></p>
+                </div>
+              )}
+
               <div className="space-y-2">
                 <label className="text-sm font-medium">স্ট্যাটাস পরিবর্তন</label>
                 <Select value={selectedFollowUp.status} onValueChange={(val) => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPin, Clock, Package } from "lucide-react";
 
@@ -10,8 +10,32 @@ interface BookingNotification {
 }
 
 export default function LiveBookingNotification() {
-  const [notification, setNotification] = useState<BookingNotification | null>(null);
+  const [queue, setQueue] = useState<BookingNotification[]>([]);
+  const [current, setCurrent] = useState<BookingNotification | null>(null);
   const [visible, setVisible] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Show next notification from queue
+  useEffect(() => {
+    if (queue.length > 0 && !visible) {
+      const [next, ...rest] = queue;
+      setCurrent(next);
+      setVisible(true);
+      setQueue(rest);
+
+      timeoutRef.current = setTimeout(() => {
+        setVisible(false);
+      }, 5000);
+    }
+  }, [queue, visible]);
+
+  // Clear visibility after hiding
+  useEffect(() => {
+    if (!visible && current) {
+      const t = setTimeout(() => setCurrent(null), 500);
+      return () => clearTimeout(t);
+    }
+  }, [visible, current]);
 
   useEffect(() => {
     const channel = supabase
@@ -36,53 +60,56 @@ export default function LiveBookingNotification() {
             .eq("id", booking.preferred_time_slot_id)
             .single();
 
-          setNotification({
+          const notification: BookingNotification = {
             id: booking.id,
             district: booking.district,
             package_name: pkg?.name || "সোফা ক্লিনিং",
             preferred_time: slot?.slot_label || "",
-          });
-          setVisible(true);
+          };
 
-          // Auto hide after 5s
-          setTimeout(() => setVisible(false), 5000);
+          setQueue((prev) => [...prev, notification]);
         }
       )
       .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
 
-  if (!visible || !notification) return null;
+  if (!current) return null;
 
   return (
-    <div className="fixed bottom-24 left-4 z-50 animate-fade-in-up max-w-[280px] sm:max-w-xs">
+    <div
+      className={`fixed bottom-24 left-4 z-50 max-w-[300px] sm:max-w-xs transition-all duration-500 ${
+        visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full"
+      }`}
+    >
       <div className="bg-card/95 backdrop-blur-xl rounded-2xl shadow-[var(--shadow-elevated)] border border-border/50 p-4 space-y-2">
         <div className="flex items-center gap-2 text-xs font-bold text-primary">
-          <span className="relative flex h-2 w-2">
+          <span className="relative flex h-2.5 w-2.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
           </span>
           নতুন বুকিং হয়েছে!
         </div>
 
         <div className="space-y-1.5">
-          {notification.district && (
+          {current.district && (
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <MapPin className="h-3 w-3 text-primary flex-shrink-0" />
-              <span>{notification.district}</span>
+              <MapPin className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+              <span className="font-medium text-foreground">{current.district} থেকে</span>
             </div>
           )}
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Package className="h-3 w-3 text-accent flex-shrink-0" />
-            <span className="font-semibold text-foreground">{notification.package_name}</span>
+            <Package className="h-3.5 w-3.5 text-accent flex-shrink-0" />
+            <span className="font-semibold text-foreground">{current.package_name}</span>
           </div>
-          {notification.preferred_time && (
+          {current.preferred_time && (
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Clock className="h-3 w-3 text-emerald-500 flex-shrink-0" />
-              <span>{notification.preferred_time}</span>
+              <Clock className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0" />
+              <span>{current.preferred_time}</span>
             </div>
           )}
         </div>
