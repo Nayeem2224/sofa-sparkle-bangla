@@ -105,7 +105,7 @@ export default function Footer() {
 
         {/* Divider */}
         <div className="border-t border-white/10 mt-10 pt-6 text-center">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-lg font-thin font-sans text-center">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-lg font-thin font-sans text-center text-accent-foreground">
             <div className="flex flex-wrap items-center gap-3">
               
 
@@ -115,7 +115,7 @@ export default function Footer() {
               
             </div>
 
-            <p className="text-white/30 text-lg text-center">
+            <p className="text-lg text-center font-mono font-medium text-primary-foreground">
               © {new Date().getFullYear()} Purexify সর্বস্বত্ব সংরক্ষিত | Designed & Marketing By{" "}
               <a
                 href="https://wa.me/8801794035977"
