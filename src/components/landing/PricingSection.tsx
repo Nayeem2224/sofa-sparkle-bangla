@@ -46,7 +46,8 @@ export default function PricingSection() {
               return (
                 <div
                   key={pkg.id}
-                  className={`relative bg-card rounded-2xl border-2 transition-all duration-300 hover:shadow-elevated hover:-translate-y-2 overflow-hidden ${
+                  onClick={() => pixelViewContent({ content_name: pkg.name, content_category: pkg.package_type, value: Number(pkg.base_price_bdt) })}
+                  className={`relative bg-card rounded-2xl border-2 transition-all duration-300 hover:shadow-elevated hover:-translate-y-2 overflow-hidden cursor-pointer ${
                     isPremium
                       ? "border-primary ring-2 ring-primary/20 shadow-lg"
                       : isStandard
