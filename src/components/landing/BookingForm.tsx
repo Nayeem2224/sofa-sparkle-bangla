@@ -492,19 +492,19 @@ export default function BookingForm() {
                   <Button
                     variant="cta"
                     size="lg"
-                    className="w-full rounded-2xl h-13 text-base shadow-[var(--shadow-elevated)] glow-primary"
+                    className="w-full rounded-2xl h-16 text-lg font-extrabold shadow-[var(--shadow-elevated)] glow-primary animate-cta-pulse"
                     onClick={handleSubmit}
                     disabled={submitting}
                   >
                     {submitting ? (
                       <span className="flex items-center gap-2">
-                        <span className="w-4 h-4 border-2 border-primary-foreground/40 border-t-primary-foreground rounded-full animate-spin" />
+                        <span className="w-5 h-5 border-2 border-primary-foreground/40 border-t-primary-foreground rounded-full animate-spin" />
                         প্রসেসিং...
                       </span>
                     ) : (
                       <span className="flex items-center gap-2">
-                        অ্যাপয়েন্টমেন্ট কনফার্ম করুন
-                        <ChevronRight className="h-4 w-4" />
+                        🗓️ অ্যাপয়েন্টমেন্ট কনফার্ম করুন
+                        <ChevronRight className="h-5 w-5" />
                       </span>
                     )}
                   </Button>

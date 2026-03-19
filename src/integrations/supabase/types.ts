@@ -259,6 +259,80 @@ export type Database = {
           },
         ]
       }
+      faqs: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          is_active: boolean
+          question: string
+          sort_order: number
+        }
+        Insert: {
+          answer: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          question: string
+          sort_order?: number
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          question?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      follow_ups: {
+        Row: {
+          booking_id: string
+          created_at: string
+          customer_name: string
+          follow_up_date: string
+          id: string
+          notes: string | null
+          phone: string
+          service_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          customer_name: string
+          follow_up_date: string
+          id?: string
+          notes?: string | null
+          phone: string
+          service_date: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          customer_name?: string
+          follow_up_date?: string
+          id?: string
+          notes?: string | null
+          phone?: string
+          service_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follow_ups_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_packages: {
         Row: {
           base_price_bdt: number
@@ -319,6 +393,39 @@ export type Database = {
           key?: string
           updated_at?: string
           value?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          created_at: string
+          customer_name: string
+          id: string
+          is_active: boolean
+          location: string
+          rating: number
+          review: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          customer_name: string
+          id?: string
+          is_active?: boolean
+          location?: string
+          rating?: number
+          review: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string
+          id?: string
+          is_active?: boolean
+          location?: string
+          rating?: number
+          review?: string
+          sort_order?: number
         }
         Relationships: []
       }
