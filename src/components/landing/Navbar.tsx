@@ -21,7 +21,10 @@ export default function Navbar() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const scrollToBooking = () => scrollTo("booking-form");
+  const scrollToBooking = () => {
+    pixelLead({ content_name: "Navbar Book CTA" });
+    scrollTo("booking-form");
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl shadow-nav border-b border-border/30">

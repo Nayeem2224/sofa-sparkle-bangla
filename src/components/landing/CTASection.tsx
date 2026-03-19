@@ -7,6 +7,7 @@ export default function CTASection() {
   const { data: settings } = useSiteSettings();
 
   const scrollToBooking = () => {
+    pixelLead({ content_name: "Bottom CTA Click" });
     document.getElementById("booking-form")?.scrollIntoView({ behavior: "smooth" });
   };
 

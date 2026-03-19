@@ -95,6 +95,7 @@ export default function HeroSection() {
           {/* Phone number */}
           <a
             href="tel:01816390415"
+            onClick={() => pixelContact()}
             className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors pt-2"
           >
             <Phone className="h-4 w-4" />
