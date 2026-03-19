@@ -29,6 +29,7 @@ import {
   HelpCircle,
   BarChart3,
   Megaphone,
+  Video,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
