@@ -1,7 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { CalendarIcon, Minus, Plus, ShieldCheck, Sparkles, Package, Clock, MapPin, User, Phone, FileText, ChevronRight, CheckCircle2, Star } from "lucide-react";
+import { pixelViewContent, pixelInitiateCheckout, pixelPurchase, pixelSchedule } from "@/lib/pixel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
