@@ -7,6 +7,7 @@ import HeroSection from "@/components/landing/HeroSection";
 import PainSection from "@/components/landing/PainSection";
 import HowItWorksSection from "@/components/landing/HowItWorksSection";
 import PricingSection from "@/components/landing/PricingSection";
+import VideoShowcase from "@/components/landing/VideoShowcase";
 import TrustSection from "@/components/landing/TrustSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import FAQSection from "@/components/landing/FAQSection";
@@ -71,8 +72,10 @@ export default function Index() {
         <PainSection />
         <HowItWorksSection />
         <PricingSection />
+        <VideoShowcase />
         <TrustSection />
         <TestimonialsSection />
+        <BookingForm />
         <BookingForm />
         <FAQSection />
         <CTASection />

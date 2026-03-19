@@ -420,6 +420,39 @@ export type Database = {
         }
         Relationships: []
       }
+      showcase_videos: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          sort_order: number
+          thumbnail_url: string | null
+          title: string
+          video_url: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          thumbnail_url?: string | null
+          title: string
+          video_url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          thumbnail_url?: string | null
+          title?: string
+          video_url?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           created_at: string

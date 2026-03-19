@@ -29,6 +29,7 @@ import {
   HelpCircle,
   BarChart3,
   Megaphone,
+  Video,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -43,6 +44,7 @@ const navItems = [
   { title: "FAQ", url: "/admin/faqs", icon: HelpCircle },
   { title: "মার্কেটিং", url: "/admin/marketing", icon: BarChart3 },
   { title: "মার্কি ব্যানার", url: "/admin/marquee", icon: Megaphone },
+  { title: "ভিডিও", url: "/admin/videos", icon: Video },
   { title: "অ্যাডমিন", url: "/admin/admins", icon: Users },
   { title: "সাইট সেটিংস", url: "/admin/settings", icon: Settings },
 ];
