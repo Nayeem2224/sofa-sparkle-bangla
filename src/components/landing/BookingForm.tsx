@@ -73,10 +73,18 @@ export default function BookingForm() {
     return Object.keys(e).length === 0;
   };
 
+  // Fire InitiateCheckout when user selects a package
+  useEffect(() => {
+    if (selectedPackage) {
+      pixelViewContent({ content_name: selectedPackage.name, content_category: "package", value: Number(selectedPackage.base_price_bdt) });
+    }
+  }, [packageId]);
+
   const handleSubmit = async () => {
     if (!validate()) return;
     setSubmitting(true);
     setSubmitError("");
+    pixelInitiateCheckout({ value: pricing.grandTotal, content_name: selectedPackage?.name, num_items: 1 });
 
     try {
       const addonItems: AddonItem[] = (addons || [])
