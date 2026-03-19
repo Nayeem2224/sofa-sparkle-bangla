@@ -1,9 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function TestimonialsSection() {
+  const isMobile = useIsMobile();
   const { data: testimonials } = useQuery({
     queryKey: ["public-testimonials"],
     queryFn: async () => {
@@ -32,7 +34,7 @@ export default function TestimonialsSection() {
       : testimonials.filter((t: any) => (t.category || "general") === activeCategory)
     : [];
 
-  const itemsPerPage = typeof window !== "undefined" && window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+  const itemsPerPage = isMobile ? 1 : 3;
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const currentItems = filtered.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
