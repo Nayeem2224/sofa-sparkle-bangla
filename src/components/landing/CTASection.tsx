@@ -1,5 +1,6 @@
 import { Sparkles, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { pixelLead } from "@/lib/pixel";
 import { useSiteSettings } from "@/hooks/use-landing-data";
 
 export default function CTASection() {
