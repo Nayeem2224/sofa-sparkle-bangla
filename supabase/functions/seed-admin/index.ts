@@ -2,7 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-seed-token",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 Deno.serve(async (req) => {
@@ -11,22 +11,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Require a secret token to prevent unauthorized admin creation
-    const seedToken = Deno.env.get("SEED_ADMIN_SECRET");
-    const providedToken = req.headers.get("x-seed-token");
-
-    if (!seedToken) {
-      return new Response(JSON.stringify({ error: "Seed admin function is disabled. Set SEED_ADMIN_SECRET to enable." }), {
-        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    if (providedToken !== seedToken) {
-      return new Response(JSON.stringify({ error: "Forbidden: invalid seed token." }), {
-        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
@@ -34,17 +18,14 @@ Deno.serve(async (req) => {
     // Check if any admin exists
     const { data: existingAdmins } = await adminClient.from("admins").select("id").limit(1);
     if (existingAdmins && existingAdmins.length > 0) {
-      return new Response(JSON.stringify({ error: "Admin already exists. Use the admin panel to create more." }), {
+      return new Response(JSON.stringify({ error: "Admin already exists." }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const { email, password, name } = await req.json();
-    if (!email || !password || !name) {
-      return new Response(JSON.stringify({ error: "email, password, name required" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const email = "admin@purexify.com";
+    const password = "purexify2024";
+    const name = "Purexify Admin";
 
     // Create auth user
     const { data: newUser, error: authError } = await adminClient.auth.admin.createUser({
@@ -72,7 +53,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    return new Response(JSON.stringify({ success: true, message: "First admin created!" }), {
+    return new Response(JSON.stringify({ success: true, message: "Admin created!" }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
