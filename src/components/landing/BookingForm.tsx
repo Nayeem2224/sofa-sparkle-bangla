@@ -115,6 +115,8 @@ export default function BookingForm() {
         addonItems
       );
 
+      pixelPurchase({ value: pricing.grandTotal, content_name: selectedPackage?.name, order_id: result.bookingId });
+      pixelSchedule();
       navigate(`/confirmation?id=${result.bookingId}&token=${result.accessToken}`);
     } catch (err: any) {
       const msg = err?.message || "";
