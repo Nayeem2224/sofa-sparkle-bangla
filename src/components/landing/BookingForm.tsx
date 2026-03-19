@@ -197,7 +197,7 @@ export default function BookingForm() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-semibold text-muted-foreground">এলাকা (ঐচ্ছিক)</Label>
+                    <Label className="text-xs font-semibold text-muted-foreground">এলাকা</Label>
                     <Select value={district} onValueChange={setDistrict}>
                       <SelectTrigger className="h-11 rounded-xl border-border/50 bg-muted/30">
                         <SelectValue placeholder="এলাকা নির্বাচন করুন" />
