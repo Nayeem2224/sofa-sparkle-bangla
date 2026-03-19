@@ -2,6 +2,7 @@ import { Phone, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSiteSettings } from "@/hooks/use-landing-data";
 import { useState } from "react";
+import { pixelLead, pixelContact } from "@/lib/pixel";
 
 const navLinks = [
   { label: "সার্ভিস", target: "how-it-works" },
