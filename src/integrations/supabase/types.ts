@@ -558,6 +558,7 @@ export type Database = {
             }[]
           }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      upsert_page_view: { Args: { p_session_id: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
