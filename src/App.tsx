@@ -21,6 +21,7 @@ import TestimonialManagement from "./pages/admin/TestimonialManagement.tsx";
 import FAQManagement from "./pages/admin/FAQManagement.tsx";
 import MarketingSettings from "./pages/admin/MarketingSettings.tsx";
 import MarqueeManagement from "./pages/admin/MarqueeManagement.tsx";
+import VideoManagement from "./pages/admin/VideoManagement.tsx";
 
 const queryClient = new QueryClient();
 
