@@ -105,17 +105,17 @@ export default function Footer() {
 
         {/* Divider */}
         <div className="border-t border-white/10 mt-10 pt-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center text-lg font-thin font-sans">
             <div className="flex flex-wrap items-center gap-3">
               
 
               
-              <Link to="/admin/login" className="text-xs text-white/20 bg-white/5 rounded-full px-4 py-1.5 border border-white/10 hover:text-white/40 transition-colors">
-                🔒 অ্যাডমিন লগইন →  Admin
-              </Link>
+              
+
+              
             </div>
 
-            <p className="text-xs text-white/30">
+            <p className="text-white/30 text-lg">
               © {new Date().getFullYear()} Purexify সর্বস্বত্ব সংরক্ষিত | Designed & Marketing By{" "}
               <a
                 href="https://wa.me/8801794035977"
