@@ -180,6 +180,7 @@ export type Database = {
       }
       bookings: {
         Row: {
+          access_token: string
           additional_notes: string | null
           addons_total: number
           address: string
@@ -201,6 +202,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          access_token?: string
           additional_notes?: string | null
           addons_total?: number
           address: string
@@ -222,6 +224,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          access_token?: string
           additional_notes?: string | null
           addons_total?: number
           address?: string
@@ -500,32 +503,60 @@ export type Database = {
         }
         Returns: Json
       }
-      get_booking_addons: {
-        Args: { booking_uuid: string }
-        Returns: {
-          addon_name: string
-          quantity: number
-          subtotal: number
-          unit_label: string
-        }[]
-      }
-      get_booking_by_id: {
-        Args: { booking_uuid: string }
-        Returns: {
-          additional_notes: string
-          addons_total: number
-          address: string
-          base_price: number
-          booking_number: string
-          customer_name: string
-          grand_total: number
-          is_outside_dhaka: boolean
-          package_name: string
-          preferred_date: string
-          slot_label: string
-          surcharge: number
-        }[]
-      }
+      get_booking_addons:
+        | {
+            Args: { booking_uuid: string }
+            Returns: {
+              addon_name: string
+              quantity: number
+              subtotal: number
+              unit_label: string
+            }[]
+          }
+        | {
+            Args: { booking_uuid: string; p_access_token?: string }
+            Returns: {
+              addon_name: string
+              quantity: number
+              subtotal: number
+              unit_label: string
+            }[]
+          }
+      get_booking_by_id:
+        | {
+            Args: { booking_uuid: string }
+            Returns: {
+              additional_notes: string
+              addons_total: number
+              address: string
+              base_price: number
+              booking_number: string
+              customer_name: string
+              grand_total: number
+              is_outside_dhaka: boolean
+              package_name: string
+              preferred_date: string
+              slot_label: string
+              surcharge: number
+            }[]
+          }
+        | {
+            Args: { booking_uuid: string; p_access_token?: string }
+            Returns: {
+              additional_notes: string
+              addons_total: number
+              address: string
+              base_price: number
+              booking_number: string
+              customer_name: string
+              grand_total: number
+              is_outside_dhaka: boolean
+              package_name: string
+              preferred_date: string
+              slot_label: string
+              surcharge: number
+            }[]
+          }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
