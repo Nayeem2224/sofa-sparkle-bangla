@@ -1,0 +1,1 @@
+ALTER TABLE public.testimonials ADD COLUMN category text NOT NULL DEFAULT 'general';

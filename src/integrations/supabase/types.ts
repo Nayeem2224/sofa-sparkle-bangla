@@ -446,6 +446,7 @@ export type Database = {
       }
       testimonials: {
         Row: {
+          category: string
           created_at: string
           customer_name: string
           id: string
@@ -456,6 +457,7 @@ export type Database = {
           sort_order: number
         }
         Insert: {
+          category?: string
           created_at?: string
           customer_name: string
           id?: string
@@ -466,6 +468,7 @@ export type Database = {
           sort_order?: number
         }
         Update: {
+          category?: string
           created_at?: string
           customer_name?: string
           id?: string
