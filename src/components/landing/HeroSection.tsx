@@ -15,6 +15,7 @@ export default function HeroSection() {
   const viewerCount = useActiveViewers();
 
   const scrollToBooking = () => {
+    pixelLead({ content_name: "Hero CTA Click" });
     document.getElementById("booking-form")?.scrollIntoView({ behavior: "smooth" });
   };
 
