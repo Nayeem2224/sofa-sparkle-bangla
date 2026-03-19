@@ -2,6 +2,7 @@ import { Phone, ArrowDown, Shield, Clock, Sparkles, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSiteSettings } from "@/hooks/use-landing-data";
 import { useActiveViewers } from "@/hooks/use-active-viewers";
+import { pixelLead, pixelContact } from "@/lib/pixel";
 
 const trustBadges = [
   { icon: Shield, text: "নিরাপদ" },
