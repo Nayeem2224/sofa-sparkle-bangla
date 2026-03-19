@@ -115,7 +115,7 @@ export default function Footer() {
               
             </div>
 
-            <p className="text-lg text-center font-mono font-medium text-primary-foreground">
+            <p className="text-lg text-center font-mono font-medium text-primary-foreground my-0 py-0 px-[50px] mx-[24px]">
               © {new Date().getFullYear()} Purexify সর্বস্বত্ব সংরক্ষিত | Designed & Marketing By{" "}
               <a
                 href="https://wa.me/8801794035977"
