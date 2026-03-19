@@ -1,5 +1,6 @@
 import { MessageCircle } from "lucide-react";
 import { useSiteSettings } from "@/hooks/use-landing-data";
+import { pixelContact } from "@/lib/pixel";
 
 export default function FloatingWhatsApp() {
   const { data: settings } = useSiteSettings();
