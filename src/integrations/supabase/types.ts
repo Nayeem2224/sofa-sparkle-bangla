@@ -503,6 +503,7 @@ export type Database = {
         }
         Returns: Json
       }
+      get_active_viewer_count: { Args: never; Returns: number }
       get_booking_addons:
         | {
             Args: { booking_uuid: string }
