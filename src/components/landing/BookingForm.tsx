@@ -459,7 +459,7 @@ export default function BookingForm() {
                     )}
                     {isOutsideDhaka && (
                       <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">ঢাকার বাইরে সার্চার্জ</span>
+                        <span className="text-muted-foreground">ঢাকা সিটির বাইরে সারচার্জ</span>
                         <span className="font-bold text-foreground">৳{pricing.surcharge.toLocaleString("bn-BD")}</span>
                       </div>
                     )}
