@@ -78,6 +78,7 @@ export default function Index() {
         <CTASection />
         <Footer />
         <FloatingWhatsApp />
+        <LiveBookingNotification />
       </div>
     </>
   );
