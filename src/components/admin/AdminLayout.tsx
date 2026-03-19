@@ -28,6 +28,7 @@ import {
   Star,
   HelpCircle,
   BarChart3,
+  Megaphone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
