@@ -32,7 +32,7 @@ export default function VideoManagement() {
         .select("*")
         .order("sort_order");
       if (error) throw error;
-      return data as VideoItem[];
+      return (data as unknown) as VideoItem[];
     },
   });
 
