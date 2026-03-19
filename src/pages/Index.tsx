@@ -14,6 +14,7 @@ import CTASection from "@/components/landing/CTASection";
 import BookingForm from "@/components/landing/BookingForm";
 import Footer from "@/components/landing/Footer";
 import FloatingWhatsApp from "@/components/landing/FloatingWhatsApp";
+import LiveBookingNotification from "@/components/landing/LiveBookingNotification";
 import { useSiteSettings } from "@/hooks/use-landing-data";
 
 function MetaPixelHead() {
@@ -77,6 +78,7 @@ export default function Index() {
         <CTASection />
         <Footer />
         <FloatingWhatsApp />
+        <LiveBookingNotification />
       </div>
     </>
   );

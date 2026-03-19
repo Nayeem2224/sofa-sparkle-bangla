@@ -503,7 +503,7 @@ export default function BookingForm() {
                       </span>
                     ) : (
                       <span className="flex items-center gap-2">
-                        🗓️ অ্যাপয়েন্টমেন্ট কনফার্ম করুন
+                        🗓️ বুকিং কনফার্ম করুন
                         <ChevronRight className="h-5 w-5" />
                       </span>
                     )}
