@@ -118,17 +118,18 @@ export async function createBooking(
 
   if (error) {
     const msg = error.message || "";
-    if (msg.includes("slot_full")) {
-      throw new Error("slot_full:এই সময়ের স্লট পূর্ণ। অন্য সময় বেছে নিন।");
-    }
-    if (msg.includes("past_date")) {
-      throw new Error("past_date:আপনি অতীত তারিখে বুকিং দিতে পারবেন না।");
-    }
-    if (msg.includes("invalid_package")) {
-      throw new Error("invalid_package:অবৈধ প্যাকেজ নির্বাচন করা হয়েছে।");
-    }
-    if (msg.includes("invalid_addon")) {
-      throw new Error("invalid_addon:অবৈধ অ্যাড-অন নির্বাচন করা হয়েছে।");
+    const errorMap: Record<string, string> = {
+      slot_full: "slot_full:এই সময়ের স্লট পূর্ণ। অন্য সময় বেছে নিন।",
+      past_date: "past_date:আপনি অতীত তারিখে বুকিং দিতে পারবেন না।",
+      invalid_package: "invalid_package:অবৈধ প্যাকেজ নির্বাচন করা হয়েছে।",
+      invalid_addon: "invalid_addon:অবৈধ অ্যাড-অন নির্বাচন করা হয়েছে।",
+      invalid_name: "invalid_name:গ্রাহকের নাম সঠিক নয়।",
+      invalid_phone: "invalid_phone:ফোন নম্বর সঠিক নয়।",
+      invalid_address: "invalid_address:ঠিকানা সঠিক নয়।",
+      invalid_notes: "invalid_notes:নোট অতিরিক্ত দীর্ঘ।",
+    };
+    for (const [key, value] of Object.entries(errorMap)) {
+      if (msg.includes(key)) throw new Error(value);
     }
     throw error;
   }
