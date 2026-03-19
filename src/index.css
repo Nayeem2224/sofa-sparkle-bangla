@@ -186,3 +186,13 @@
 .animate-cta-pulse {
   animation: cta-pulse 2.5s ease-in-out infinite;
 }
+
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}

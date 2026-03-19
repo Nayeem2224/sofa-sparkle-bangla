@@ -64,6 +64,7 @@ export default function Index() {
       </Helmet>
       <MetaPixelHead />
       <div className="min-h-screen">
+        <MarqueeBanner />
         <Navbar />
         <HeroSection />
         <PainSection />
