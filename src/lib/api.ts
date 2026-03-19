@@ -97,7 +97,7 @@ export interface AddonItem {
 export async function createBooking(
   booking: BookingPayload,
   addonItems: AddonItem[]
-): Promise<{ bookingId: string; bookingNumber: string }> {
+): Promise<{ bookingId: string; bookingNumber: string; accessToken: string }> {
   const addonPayload = addonItems.map((a) => ({
     add_on_id: a.add_on_id,
     quantity: a.quantity,
