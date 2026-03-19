@@ -104,8 +104,8 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/10 mt-10 pt-6 text-center">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-lg font-thin font-sans text-center text-accent-foreground">
+        <div className="border-t border-white/10 mt-10 pt-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-lg font-thin font-sans text-accent-foreground">
             <div className="flex flex-wrap items-center gap-3">
               
 
