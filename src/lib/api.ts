@@ -135,7 +135,7 @@ export async function createBooking(
   }
 
   const result = data as any;
-  return { bookingId: result.id, bookingNumber: result.booking_number };
+  return { bookingId: result.id, bookingNumber: result.booking_number, accessToken: result.access_token };
 }
 
 // Price calculation utility — single source of truth
