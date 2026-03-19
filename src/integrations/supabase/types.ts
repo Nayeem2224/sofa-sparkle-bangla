@@ -333,6 +333,54 @@ export type Database = {
           },
         ]
       }
+      marquee_items: {
+        Row: {
+          created_at: string
+          icon: string
+          id: string
+          is_active: boolean
+          sort_order: number
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          icon?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          text: string
+        }
+        Update: {
+          created_at?: string
+          icon?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          text?: string
+        }
+        Relationships: []
+      }
+      page_views: {
+        Row: {
+          created_at: string
+          id: string
+          last_seen_at: string
+          session_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_seen_at?: string
+          session_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_seen_at?: string
+          session_id?: string
+        }
+        Relationships: []
+      }
       service_packages: {
         Row: {
           base_price_bdt: number

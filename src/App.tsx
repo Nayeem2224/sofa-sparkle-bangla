@@ -20,6 +20,7 @@ import FollowUpManagement from "./pages/admin/FollowUpManagement.tsx";
 import TestimonialManagement from "./pages/admin/TestimonialManagement.tsx";
 import FAQManagement from "./pages/admin/FAQManagement.tsx";
 import MarketingSettings from "./pages/admin/MarketingSettings.tsx";
+import MarqueeManagement from "./pages/admin/MarqueeManagement.tsx";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="testimonials" element={<TestimonialManagement />} />
               <Route path="faqs" element={<FAQManagement />} />
               <Route path="marketing" element={<MarketingSettings />} />
+              <Route path="marquee" element={<MarqueeManagement />} />
               <Route path="settings" element={<SiteSettings />} />
               <Route path="admins" element={<AdminManagement />} />
             </Route>
