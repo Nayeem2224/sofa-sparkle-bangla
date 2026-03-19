@@ -16,14 +16,9 @@ export function useActiveViewers() {
   useEffect(() => {
     const sessionId = getSessionId();
 
-    // Upsert own session
+    // Upsert own session via secure RPC
     const heartbeat = async () => {
-      await supabase
-        .from("page_views" as any)
-        .upsert(
-          { session_id: sessionId, last_seen_at: new Date().toISOString() } as any,
-          { onConflict: "session_id" }
-        );
+      await supabase.rpc("upsert_page_view" as any, { p_session_id: sessionId });
     };
 
     // Count active viewers (last 3 minutes)
