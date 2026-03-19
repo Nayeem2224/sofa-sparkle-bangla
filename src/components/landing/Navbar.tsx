@@ -2,6 +2,7 @@ import { Phone, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSiteSettings } from "@/hooks/use-landing-data";
 import { useState } from "react";
+import { pixelLead, pixelContact } from "@/lib/pixel";
 
 const navLinks = [
   { label: "সার্ভিস", target: "how-it-works" },
@@ -20,7 +21,10 @@ export default function Navbar() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const scrollToBooking = () => scrollTo("booking-form");
+  const scrollToBooking = () => {
+    pixelLead({ content_name: "Navbar Book CTA" });
+    scrollTo("booking-form");
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl shadow-nav border-b border-border/30">
@@ -53,6 +57,7 @@ export default function Navbar() {
           {settings?.helpline_number && (
             <a
               href={`tel:${settings.helpline_number}`}
+              onClick={() => pixelContact()}
               className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors group"
             >
               <span className="relative flex h-7 w-7 items-center justify-center">

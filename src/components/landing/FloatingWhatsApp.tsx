@@ -1,5 +1,6 @@
 import { MessageCircle } from "lucide-react";
 import { useSiteSettings } from "@/hooks/use-landing-data";
+import { pixelContact } from "@/lib/pixel";
 
 export default function FloatingWhatsApp() {
   const { data: settings } = useSiteSettings();
@@ -9,6 +10,7 @@ export default function FloatingWhatsApp() {
   return (
     <a
       href={`https://wa.me/${settings.whatsapp_number}`}
+      onClick={() => pixelContact()}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="WhatsApp এ যোগাযোগ করুন"

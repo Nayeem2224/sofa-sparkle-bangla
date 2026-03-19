@@ -1,7 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { CalendarIcon, Minus, Plus, ShieldCheck, Sparkles, Package, Clock, MapPin, User, Phone, FileText, ChevronRight, CheckCircle2, Star } from "lucide-react";
+import { pixelViewContent, pixelInitiateCheckout, pixelPurchase, pixelSchedule } from "@/lib/pixel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,10 +73,18 @@ export default function BookingForm() {
     return Object.keys(e).length === 0;
   };
 
+  // Fire InitiateCheckout when user selects a package
+  useEffect(() => {
+    if (selectedPackage) {
+      pixelViewContent({ content_name: selectedPackage.name, content_category: "package", value: Number(selectedPackage.base_price_bdt) });
+    }
+  }, [packageId]);
+
   const handleSubmit = async () => {
     if (!validate()) return;
     setSubmitting(true);
     setSubmitError("");
+    pixelInitiateCheckout({ value: pricing.grandTotal, content_name: selectedPackage?.name, num_items: 1 });
 
     try {
       const addonItems: AddonItem[] = (addons || [])
@@ -106,6 +115,8 @@ export default function BookingForm() {
         addonItems
       );
 
+      pixelPurchase({ value: pricing.grandTotal, content_name: selectedPackage?.name, order_id: result.bookingId });
+      pixelSchedule();
       navigate(`/confirmation?id=${result.bookingId}&token=${result.accessToken}`);
     } catch (err: any) {
       const msg = err?.message || "";

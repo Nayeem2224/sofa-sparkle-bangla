@@ -2,6 +2,7 @@ import { Phone, ArrowDown, Shield, Clock, Sparkles, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSiteSettings } from "@/hooks/use-landing-data";
 import { useActiveViewers } from "@/hooks/use-active-viewers";
+import { pixelLead, pixelContact } from "@/lib/pixel";
 
 const trustBadges = [
   { icon: Shield, text: "নিরাপদ" },
@@ -14,6 +15,7 @@ export default function HeroSection() {
   const viewerCount = useActiveViewers();
 
   const scrollToBooking = () => {
+    pixelLead({ content_name: "Hero CTA Click" });
     document.getElementById("booking-form")?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -93,6 +95,7 @@ export default function HeroSection() {
           {/* Phone number */}
           <a
             href="tel:01816390415"
+            onClick={() => pixelContact()}
             className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors pt-2"
           >
             <Phone className="h-4 w-4" />
