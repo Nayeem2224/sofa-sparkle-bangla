@@ -1,6 +1,7 @@
 import { Check, Star, Crown, Sofa, Sparkles } from "lucide-react";
 import { usePackages, useAddOns, useSiteSettings } from "@/hooks/use-landing-data";
 import { Skeleton } from "@/components/ui/skeleton";
+import { pixelViewContent } from "@/lib/pixel";
 
 export default function PricingSection() {
   const { data: packages, isLoading: loadingPkg } = usePackages();
