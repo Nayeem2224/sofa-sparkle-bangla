@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 
@@ -8,19 +8,41 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const checkAdmin = useCallback(async (userId: string) => {
+    const { data } = await supabase
+      .from("admins")
+      .select("id")
+      .eq("user_id", userId)
+      .maybeSingle();
+    return !!data;
+  }, []);
+
   useEffect(() => {
+    // Get initial session first
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      if (session?.user) {
+        checkAdmin(session.user.id).then((result) => {
+          setIsAdmin(result);
+          setLoading(false);
+        });
+      } else {
+        setIsAdmin(false);
+        setLoading(false);
+      }
+    });
+
+    // Then listen for changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          const { data } = await supabase
-            .from("admins")
-            .select("id")
-            .eq("user_id", session.user.id)
-            .maybeSingle();
-          setIsAdmin(!!data);
+          const result = await checkAdmin(session.user.id);
+          setIsAdmin(result);
         } else {
           setIsAdmin(false);
         }
@@ -28,27 +50,8 @@ export function useAuth() {
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-
-      if (session?.user) {
-        supabase
-          .from("admins")
-          .select("id")
-          .eq("user_id", session.user.id)
-          .maybeSingle()
-          .then(({ data }) => {
-            setIsAdmin(!!data);
-            setLoading(false);
-          });
-      } else {
-        setLoading(false);
-      }
-    });
-
     return () => subscription.unsubscribe();
-  }, []);
+  }, [checkAdmin]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -56,6 +59,9 @@ export function useAuth() {
   };
 
   const signOut = async () => {
+    setIsAdmin(false);
+    setUser(null);
+    setSession(null);
     await supabase.auth.signOut();
   };
 
