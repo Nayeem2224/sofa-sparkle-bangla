@@ -10,6 +10,7 @@ export default function FloatingWhatsApp() {
   return (
     <a
       href={`https://wa.me/${settings.whatsapp_number}`}
+      onClick={() => pixelContact()}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="WhatsApp এ যোগাযোগ করুন"

@@ -57,6 +57,7 @@ export default function Navbar() {
           {settings?.helpline_number && (
             <a
               href={`tel:${settings.helpline_number}`}
+              onClick={() => pixelContact()}
               className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors group"
             >
               <span className="relative flex h-7 w-7 items-center justify-center">
