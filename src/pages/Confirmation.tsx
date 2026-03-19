@@ -16,9 +16,15 @@ interface BookingDetail {
   grand_total: number;
   is_outside_dhaka: boolean;
   additional_notes: string | null;
-  service_packages: { name: string } | null;
-  available_time_slots: { slot_label: string } | null;
-  booking_addon_items: { quantity: number; subtotal: number; booking_add_ons: { name: string; unit_label: string } | null }[];
+  package_name: string | null;
+  slot_label: string | null;
+}
+
+interface AddonItem {
+  quantity: number;
+  subtotal: number;
+  addon_name: string | null;
+  unit_label: string | null;
 }
 
 export default function ConfirmationPage() {
@@ -26,23 +32,22 @@ export default function ConfirmationPage() {
   const bookingId = params.get("id");
   const { data: settings } = useSiteSettings();
   const [booking, setBooking] = useState<BookingDetail | null>(null);
+  const [addons, setAddons] = useState<AddonItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!bookingId) return;
     (async () => {
-      const { data } = await supabase
-        .from("bookings")
-        .select(`
-          booking_number, customer_name, address, preferred_date,
-          base_price, addons_total, surcharge, grand_total, is_outside_dhaka, additional_notes,
-          service_packages(name),
-          available_time_slots(slot_label),
-          booking_addon_items(quantity, subtotal, booking_add_ons(name, unit_label))
-        `)
-        .eq("id", bookingId)
-        .single();
-      setBooking(data as any);
+      const [bookingRes, addonsRes] = await Promise.all([
+        supabase.rpc("get_booking_by_id", { booking_uuid: bookingId }),
+        supabase.rpc("get_booking_addons", { booking_uuid: bookingId }),
+      ]);
+      if (bookingRes.data && bookingRes.data.length > 0) {
+        setBooking(bookingRes.data[0] as any);
+      }
+      if (addonsRes.data) {
+        setAddons(addonsRes.data as any[]);
+      }
       setLoading(false);
     })();
   }, [bookingId]);
@@ -95,7 +100,7 @@ export default function ConfirmationPage() {
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">প্যাকেজ</span>
-            <span className="font-medium">{(booking.service_packages as any)?.name}</span>
+            <span className="font-medium">{booking.package_name}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">তারিখ</span>
@@ -103,15 +108,15 @@ export default function ConfirmationPage() {
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">সময়</span>
-            <span className="font-medium">{(booking.available_time_slots as any)?.slot_label}</span>
+            <span className="font-medium">{booking.slot_label}</span>
           </div>
 
-          {booking.booking_addon_items?.length > 0 && (
+          {addons.length > 0 && (
             <div>
               <span className="text-xs text-muted-foreground">অতিরিক্ত সেবা:</span>
-              {booking.booking_addon_items.map((item: any, i: number) => (
+              {addons.map((item, i) => (
                 <div key={i} className="flex justify-between text-xs mt-1">
-                  <span>{item.booking_add_ons?.name} × {item.quantity}</span>
+                  <span>{item.addon_name} × {item.quantity}</span>
                   <span>৳{Number(item.subtotal)}</span>
                 </div>
               ))}
