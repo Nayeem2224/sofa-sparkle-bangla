@@ -11,7 +11,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Require a secret token to prevent unauthorized admin creation
     const seedToken = Deno.env.get("SEED_ADMIN_SECRET");
     const providedToken = req.headers.get("x-seed-token");
 
@@ -31,7 +30,6 @@ Deno.serve(async (req) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
 
-    // Check if any admin exists
     const { data: existingAdmins } = await adminClient.from("admins").select("id").limit(1);
     if (existingAdmins && existingAdmins.length > 0) {
       return new Response(JSON.stringify({ error: "Admin already exists. Use the admin panel to create more." }), {
@@ -46,11 +44,8 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Create auth user
     const { data: newUser, error: authError } = await adminClient.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
+      email, password, email_confirm: true,
     });
 
     if (authError) {
@@ -59,11 +54,8 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Insert into admins table
     const { error: insertError } = await adminClient.from("admins").insert({
-      user_id: newUser.user.id,
-      email,
-      name,
+      user_id: newUser.user.id, email, name,
     });
 
     if (insertError) {
