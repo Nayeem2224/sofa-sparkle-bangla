@@ -210,7 +210,7 @@ export default function BookingForm() {
                     </Select>
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-semibold text-muted-foreground">ঢাকার বাইরে?</Label>
+                    <Label className="text-xs font-semibold text-muted-foreground">ঢাকা সিটির বাইরে?</Label>
                     <div className="flex items-center gap-3 h-11 bg-muted/30 rounded-xl border border-border/50 px-3">
                       <Switch checked={isOutsideDhaka} onCheckedChange={setIsOutsideDhaka} />
                       <span className="text-sm text-muted-foreground">{isOutsideDhaka ? 'হ্যাঁ' : 'না'}</span>
