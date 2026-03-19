@@ -13,7 +13,7 @@ export default function LiveBookingNotification() {
   const [queue, setQueue] = useState<BookingNotification[]>([]);
   const [current, setCurrent] = useState<BookingNotification | null>(null);
   const [visible, setVisible] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Show next notification from queue
   useEffect(() => {
