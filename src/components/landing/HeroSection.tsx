@@ -22,17 +22,17 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative hero-dark-bg pt-20 pb-32 overflow-hidden">
+    <section className="relative hero-dark-bg pt-16 sm:pt-20 pb-24 sm:pb-32 overflow-hidden">
       {/* Decorative orbs */}
-      <div className="absolute top-10 right-[10%] w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-20 left-[5%] w-64 h-64 bg-accent/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-white/[0.02] rounded-full" />
+      <div className="absolute top-10 right-[10%] w-60 sm:w-80 h-60 sm:h-80 bg-primary/10 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-20 left-[5%] w-48 sm:w-64 h-48 sm:h-64 bg-accent/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[700px] h-[400px] sm:h-[700px] bg-white/[0.02] rounded-full" />
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
 
-      <div className="container relative z-10">
-        <div className="max-w-2xl mx-auto text-center space-y-6 animate-fade-in-up">
+      <div className="container relative z-10 px-4">
+        <div className="max-w-2xl mx-auto text-center space-y-5 sm:space-y-6 animate-fade-in-up">
           {/* Live viewer badge */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/15 text-sm text-white/80">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-3 sm:px-4 py-1.5 border border-white/15 text-xs sm:text-sm text-white/80">
             <span className="relative flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
@@ -43,40 +43,40 @@ export default function HeroSection() {
 
           {/* Tagline badge */}
           <div className="flex justify-center">
-            <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-full px-5 py-2 border border-white/20">
+            <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-full px-4 sm:px-5 py-2 border border-white/20">
               <Sparkles className="h-4 w-4 text-accent" />
-              <span className="text-sm text-white/90 font-semibold">ঢাকায় #১ সোফা ক্লিনিং সার্ভিস</span>
+              <span className="text-xs sm:text-sm text-white/90 font-semibold">ঢাকায় #১ সোফা ক্লিনিং সার্ভিস</span>
             </div>
           </div>
 
           {/* Heading */}
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-[1.15] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white leading-[1.15] tracking-tight">
             আপনার সোফা হোক
             <br />
             <span className="gradient-text-warm">ঝকঝকে পরিষ্কার</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg md:text-xl text-white/70 font-medium max-w-xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-white/70 font-medium max-w-xl mx-auto leading-relaxed px-2">
             {settings?.hero_subheadline || "প্রফেশনাল ডিপ ক্লিনিং — নিরাপদ, দ্রুত, ঘরে বসেই"}
           </p>
 
           {/* Trust badges */}
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
             {trustBadges.map((b, i) => (
-              <div key={i} className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10">
-                <b.icon className="h-4 w-4 text-white/90" />
-                <span className="text-sm text-white/90 font-medium">{b.text}</span>
+              <div key={i} className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 border border-white/10">
+                <b.icon className="h-3.5 sm:h-4 w-3.5 sm:w-4 text-white/90" />
+                <span className="text-xs sm:text-sm text-white/90 font-medium">{b.text}</span>
               </div>
             ))}
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 px-4 sm:px-0">
             <Button
               onClick={scrollToBooking}
               variant="cta"
-              className="text-lg font-bold px-10 py-4 h-auto rounded-full shadow-xl hover:scale-105 transition-all duration-300"
+              className="w-full sm:w-auto text-base sm:text-lg font-bold px-8 sm:px-10 py-3.5 sm:py-4 h-auto rounded-full shadow-xl hover:scale-105 transition-all duration-300"
             >
               এখনই বুক করুন
               <ArrowDown className="h-5 w-5 ml-1 animate-bounce" />
@@ -84,7 +84,7 @@ export default function HeroSection() {
             <Button
               onClick={scrollToPricing}
               variant="outline"
-              className="text-lg font-semibold px-8 py-4 h-auto rounded-full bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-all duration-300"
+              className="w-full sm:w-auto text-base sm:text-lg font-semibold px-6 sm:px-8 py-3.5 sm:py-4 h-auto rounded-full bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-all duration-300"
             >
               মূল্য দেখুন
             </Button>
@@ -103,7 +103,7 @@ export default function HeroSection() {
 
       {/* Wave divider */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-        <svg viewBox="0 0 1440 100" className="relative block w-full h-20" preserveAspectRatio="none">
+        <svg viewBox="0 0 1440 100" className="relative block w-full h-16 sm:h-20" preserveAspectRatio="none">
           <path fill="hsl(var(--surface-grey))" d="M0,50 C240,90 480,10 720,50 C960,90 1200,20 1440,50 L1440,100 L0,100 Z" />
         </svg>
       </div>
