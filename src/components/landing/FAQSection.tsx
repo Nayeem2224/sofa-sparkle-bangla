@@ -26,15 +26,16 @@ export default function FAQSection() {
   if (!faqs || faqs.length === 0) return null;
 
   return (
-    <section id="faq" className="relative py-20 overflow-hidden">
+    <section id="faq" className="relative py-16 md:py-20 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--surface-aqua))] to-background" />
 
-      <div className="container relative z-10 max-w-3xl">
-        <div className="text-center mb-3">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 rounded-full px-4 py-1.5 mb-3">
-            <HelpCircle className="h-3.5 w-3.5" /> সাহায্য দরকার?
+      <div className="container relative z-10 max-w-3xl px-4">
+        {/* Header */}
+        <div className="text-center mb-4">
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 rounded-full px-4 py-1.5 mb-4">
+            <HelpCircle className="h-3.5 w-3.5" /> সাহায্য প্রয়োজন?
           </span>
-          <h2 className="text-2xl md:text-4xl font-extrabold text-foreground">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground leading-tight">
             সচরাচর জিজ্ঞাসিত <span className="gradient-text">প্রশ্নসমূহ</span>
           </h2>
           <p className="text-sm text-muted-foreground mt-2">যা জানা দরকার</p>
@@ -44,9 +45,9 @@ export default function FAQSection() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
           <a
             href="tel:01816390415"
-            className="group inline-flex items-center gap-2.5 bg-card rounded-full border border-border/50 px-6 py-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+            className="group inline-flex items-center gap-2.5 bg-card rounded-full border border-border/50 px-5 sm:px-6 py-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 w-full sm:w-auto justify-center"
           >
-            <span className="relative flex h-8 w-8 items-center justify-center">
+            <span className="relative flex h-8 w-8 items-center justify-center flex-shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/20" />
               <span className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary/10">
                 <Phone className="h-3.5 w-3.5 text-primary" />
@@ -59,9 +60,9 @@ export default function FAQSection() {
             href="https://wa.me/8801816390415"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2.5 bg-emerald-50 rounded-full border border-emerald-200/50 px-6 py-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+            className="group inline-flex items-center gap-2.5 bg-emerald-50 rounded-full border border-emerald-200/50 px-5 sm:px-6 py-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 w-full sm:w-auto justify-center"
           >
-            <span className="relative flex h-8 w-8 items-center justify-center">
+            <span className="relative flex h-8 w-8 items-center justify-center flex-shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/20" />
               <span className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100">
                 <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
@@ -71,22 +72,23 @@ export default function FAQSection() {
           </a>
         </div>
 
+        {/* FAQ Accordion */}
         <Accordion type="single" collapsible className="space-y-3">
           {faqs.map((faq, index) => (
             <AccordionItem
               key={faq.id}
               value={faq.id}
-              className="bg-card rounded-2xl border border-border/50 px-6 shadow-sm hover:shadow-md transition-shadow data-[state=open]:shadow-md data-[state=open]:border-primary/20"
+              className="bg-card rounded-2xl border border-border/50 px-4 sm:px-6 shadow-sm hover:shadow-md transition-shadow data-[state=open]:shadow-md data-[state=open]:border-primary/20"
             >
-              <AccordionTrigger className="text-sm font-semibold text-foreground hover:no-underline py-5 gap-4">
-                <div className="flex items-center gap-3">
+              <AccordionTrigger className="text-sm font-semibold text-foreground hover:no-underline py-4 sm:py-5 gap-3 sm:gap-4">
+                <div className="flex items-center gap-2.5 sm:gap-3 text-left">
                   <span className="flex-shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-full bg-primary text-primary-foreground text-xs font-bold">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  {faq.question}
+                  <span className="leading-snug">{faq.question}</span>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="text-sm text-muted-foreground pb-5 pl-10 leading-relaxed">
+              <AccordionContent className="text-sm text-muted-foreground pb-4 sm:pb-5 pl-9 sm:pl-10 leading-relaxed">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>

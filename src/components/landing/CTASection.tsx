@@ -10,21 +10,21 @@ export default function CTASection() {
   };
 
   return (
-    <section className="relative py-20 overflow-hidden gradient-hero-bg">
+    <section className="relative py-16 md:py-20 overflow-hidden gradient-hero-bg">
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-      <div className="container relative z-10 text-center space-y-6 max-w-2xl mx-auto">
-        <Sparkles className="h-8 w-8 text-primary-foreground/80 mx-auto" />
-        <h2 className="text-2xl md:text-4xl font-extrabold text-primary-foreground leading-tight">
+      <div className="container relative z-10 text-center space-y-5 sm:space-y-6 max-w-2xl mx-auto px-4">
+        <Sparkles className="h-7 w-7 sm:h-8 sm:w-8 text-primary-foreground/80 mx-auto" />
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary-foreground leading-tight">
           আজই বুক করুন — সীমিত স্লট বাকি!
         </h2>
-        <p className="text-primary-foreground/70 text-sm md:text-base max-w-md mx-auto">
+        <p className="text-primary-foreground/70 text-sm sm:text-base max-w-md mx-auto px-4">
           এখনই না করলে আপনার পছন্দের সময় অন্য কেউ নিয়ে নিতে পারে
         </p>
 
         <Button
           onClick={scrollToBooking}
           size="lg"
-          className="bg-white text-primary hover:bg-white/95 hover:scale-105 text-lg font-bold px-10 py-5 h-auto rounded-full transition-all duration-300 shadow-xl animate-cta-pulse"
+          className="bg-white text-primary hover:bg-white/95 hover:scale-105 text-base sm:text-lg font-bold px-8 sm:px-10 py-4 sm:py-5 h-auto rounded-full transition-all duration-300 shadow-xl animate-cta-pulse"
         >
           এখনই বুক করুন ↗
         </Button>
