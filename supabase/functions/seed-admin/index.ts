@@ -2,7 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-seed-token",
 };
 
 Deno.serve(async (req) => {
@@ -11,6 +11,22 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Require a secret token to prevent unauthorized admin creation
+    const seedToken = Deno.env.get("SEED_ADMIN_SECRET");
+    const providedToken = req.headers.get("x-seed-token");
+
+    if (!seedToken) {
+      return new Response(JSON.stringify({ error: "Seed admin function is disabled. Set SEED_ADMIN_SECRET to enable." }), {
+        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (providedToken !== seedToken) {
+      return new Response(JSON.stringify({ error: "Forbidden: invalid seed token." }), {
+        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
