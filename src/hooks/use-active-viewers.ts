@@ -21,14 +21,12 @@ export function useActiveViewers() {
       await supabase.rpc("upsert_page_view" as any, { p_session_id: sessionId });
     };
 
-    // Count active viewers (last 3 minutes)
+    // Read active viewer count via secure aggregate RPC
     const fetchCount = async () => {
-      const threshold = new Date(Date.now() - 3 * 60 * 1000).toISOString();
-      const { count: c } = await supabase
-        .from("page_views" as any)
-        .select("*", { count: "exact", head: true })
-        .gte("last_seen_at", threshold);
-      if (c !== null && c > 0) setCount(c);
+      const { data: c } = await supabase.rpc("get_active_viewer_count" as any);
+      if (typeof c === "number" && c > 0) {
+        setCount(c);
+      }
     };
 
     heartbeat().then(fetchCount);
