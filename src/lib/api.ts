@@ -98,14 +98,25 @@ export async function createBooking(
   booking: BookingPayload,
   addonItems: AddonItem[]
 ): Promise<{ bookingId: string; bookingNumber: string }> {
-  const { data, error } = await supabase
-    .from("bookings")
-    .insert(booking as any)
-    .select("id, booking_number")
-    .single();
+  const addonPayload = addonItems.map((a) => ({
+    add_on_id: a.add_on_id,
+    quantity: a.quantity,
+  }));
+
+  const { data, error } = await supabase.rpc("create_booking_with_addons", {
+    p_customer_name: booking.customer_name,
+    p_phone: booking.phone,
+    p_address: booking.address,
+    p_district: booking.district || null,
+    p_is_outside_dhaka: booking.is_outside_dhaka,
+    p_package_id: booking.package_id,
+    p_preferred_date: booking.preferred_date,
+    p_preferred_time_slot_id: booking.preferred_time_slot_id,
+    p_additional_notes: booking.additional_notes || null,
+    p_addon_items: addonPayload,
+  });
 
   if (error) {
-    // Parse trigger errors
     const msg = error.message || "";
     if (msg.includes("slot_full")) {
       throw new Error("slot_full:এই সময়ের স্লট পূর্ণ। অন্য সময় বেছে নিন।");
@@ -113,23 +124,17 @@ export async function createBooking(
     if (msg.includes("past_date")) {
       throw new Error("past_date:আপনি অতীত তারিখে বুকিং দিতে পারবেন না।");
     }
+    if (msg.includes("invalid_package")) {
+      throw new Error("invalid_package:অবৈধ প্যাকেজ নির্বাচন করা হয়েছে।");
+    }
+    if (msg.includes("invalid_addon")) {
+      throw new Error("invalid_addon:অবৈধ অ্যাড-অন নির্বাচন করা হয়েছে।");
+    }
     throw error;
   }
 
-  // Insert addon items
-  if (addonItems.length > 0) {
-    const items = addonItems.map((a) => ({
-      booking_id: data.id,
-      add_on_id: a.add_on_id,
-      quantity: a.quantity,
-      unit_price: a.unit_price,
-      subtotal: a.subtotal,
-    }));
-    const { error: addonError } = await supabase.from("booking_addon_items").insert(items as any);
-    if (addonError) throw addonError;
-  }
-
-  return { bookingId: data.id, bookingNumber: data.booking_number };
+  const result = data as any;
+  return { bookingId: result.id, bookingNumber: result.booking_number };
 }
 
 // Price calculation utility — single source of truth
