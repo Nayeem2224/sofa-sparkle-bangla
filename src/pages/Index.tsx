@@ -76,7 +76,6 @@ export default function Index() {
         <TrustSection />
         <TestimonialsSection />
         <BookingForm />
-        <BookingForm />
         <FAQSection />
         <CTASection />
         <Footer />
