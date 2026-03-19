@@ -20,6 +20,7 @@ import FollowUpManagement from "./pages/admin/FollowUpManagement.tsx";
 import TestimonialManagement from "./pages/admin/TestimonialManagement.tsx";
 import FAQManagement from "./pages/admin/FAQManagement.tsx";
 import MarketingSettings from "./pages/admin/MarketingSettings.tsx";
+import MarqueeManagement from "./pages/admin/MarqueeManagement.tsx";
 
 const queryClient = new QueryClient();
 
