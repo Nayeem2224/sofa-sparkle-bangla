@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import MarqueeBanner from "@/components/landing/MarqueeBanner";
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import PainSection from "@/components/landing/PainSection";
@@ -63,6 +64,7 @@ export default function Index() {
       </Helmet>
       <MetaPixelHead />
       <div className="min-h-screen">
+        <MarqueeBanner />
         <Navbar />
         <HeroSection />
         <PainSection />
