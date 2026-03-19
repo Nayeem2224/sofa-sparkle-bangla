@@ -30,6 +30,7 @@ interface AddonItem {
 export default function ConfirmationPage() {
   const [params] = useSearchParams();
   const bookingId = params.get("id");
+  const accessToken = params.get("token");
   const { data: settings } = useSiteSettings();
   const [booking, setBooking] = useState<BookingDetail | null>(null);
   const [addons, setAddons] = useState<AddonItem[]>([]);
@@ -39,8 +40,8 @@ export default function ConfirmationPage() {
     if (!bookingId) return;
     (async () => {
       const [bookingRes, addonsRes] = await Promise.all([
-        supabase.rpc("get_booking_by_id", { booking_uuid: bookingId }),
-        supabase.rpc("get_booking_addons", { booking_uuid: bookingId }),
+        supabase.rpc("get_booking_by_id", { booking_uuid: bookingId, p_access_token: accessToken }),
+        supabase.rpc("get_booking_addons", { booking_uuid: bookingId, p_access_token: accessToken }),
       ]);
       if (bookingRes.data && bookingRes.data.length > 0) {
         setBooking(bookingRes.data[0] as any);

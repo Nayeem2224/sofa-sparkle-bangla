@@ -106,7 +106,7 @@ export default function BookingForm() {
         addonItems
       );
 
-      navigate(`/confirmation?id=${result.bookingId}`);
+      navigate(`/confirmation?id=${result.bookingId}&token=${result.accessToken}`);
     } catch (err: any) {
       const msg = err?.message || "";
       if (msg.includes("slot_full")) {

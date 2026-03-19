@@ -97,7 +97,7 @@ export interface AddonItem {
 export async function createBooking(
   booking: BookingPayload,
   addonItems: AddonItem[]
-): Promise<{ bookingId: string; bookingNumber: string }> {
+): Promise<{ bookingId: string; bookingNumber: string; accessToken: string }> {
   const addonPayload = addonItems.map((a) => ({
     add_on_id: a.add_on_id,
     quantity: a.quantity,
@@ -135,7 +135,7 @@ export async function createBooking(
   }
 
   const result = data as any;
-  return { bookingId: result.id, bookingNumber: result.booking_number };
+  return { bookingId: result.id, bookingNumber: result.booking_number, accessToken: result.access_token };
 }
 
 // Price calculation utility — single source of truth
