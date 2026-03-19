@@ -72,8 +72,10 @@ export default function Index() {
         <PainSection />
         <HowItWorksSection />
         <PricingSection />
+        <VideoShowcase />
         <TrustSection />
         <TestimonialsSection />
+        <BookingForm />
         <BookingForm />
         <FAQSection />
         <CTASection />
