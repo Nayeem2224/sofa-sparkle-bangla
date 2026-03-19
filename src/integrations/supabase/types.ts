@@ -485,6 +485,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_booking_with_addons: {
+        Args: {
+          p_additional_notes?: string
+          p_addon_items?: Json
+          p_address: string
+          p_customer_name: string
+          p_district?: string
+          p_is_outside_dhaka?: boolean
+          p_package_id?: string
+          p_phone: string
+          p_preferred_date?: string
+          p_preferred_time_slot_id?: string
+        }
+        Returns: Json
+      }
       get_booking_addons: {
         Args: { booking_uuid: string }
         Returns: {
