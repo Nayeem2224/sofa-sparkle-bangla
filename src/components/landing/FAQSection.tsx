@@ -26,7 +26,7 @@ export default function FAQSection() {
   if (!faqs || faqs.length === 0) return null;
 
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section id="faq" className="relative py-20 overflow-hidden">
       {/* Gradient background matching reference */}
       <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--surface-aqua))] to-background" />
 

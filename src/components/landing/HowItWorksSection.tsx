@@ -9,7 +9,7 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section className="bg-background py-20 relative">
+    <section id="how-it-works" className="bg-background py-20 relative">
       <div className="container">
         <h2 className="text-2xl md:text-4xl font-extrabold text-center text-foreground mb-3">
           কিভাবে <span className="gradient-text">কাজ করে?</span>

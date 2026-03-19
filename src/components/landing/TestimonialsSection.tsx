@@ -20,7 +20,7 @@ export default function TestimonialsSection() {
   if (!testimonials || testimonials.length === 0) return null;
 
   return (
-    <section className="bg-[hsl(var(--surface-grey))] py-20 relative">
+    <section id="testimonials" className="bg-[hsl(var(--surface-grey))] py-20 relative">
       <div className="container">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-4xl font-extrabold text-foreground mb-2">

@@ -20,7 +20,7 @@ export default function PricingSection() {
   };
 
   return (
-    <section className="bg-surface-grey py-20 pb-24 relative">
+    <section id="pricing" className="bg-surface-grey py-20 pb-24 relative">
       <div className="container">
         <h2 className="text-2xl md:text-4xl font-extrabold text-center text-foreground mb-3">
           সার্ভিস প্যাকেজ ও <span className="gradient-text">মূল্য</span>
