@@ -25,7 +25,7 @@ export default function VideoShowcase() {
   const current = videos[activeVideo];
 
   return (
-    <section className="bg-surface-grey py-16 md:py-24 relative overflow-hidden">
+    <section id="video-showcase" className="bg-surface-grey py-16 md:py-24 relative overflow-hidden">
       <div className="container px-4">
         {/* Header */}
         <div className="text-center mb-10 md:mb-14">

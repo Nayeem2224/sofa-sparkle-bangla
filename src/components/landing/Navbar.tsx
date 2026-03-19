@@ -5,6 +5,7 @@ import { useState } from "react";
 
 const navLinks = [
   { label: "সার্ভিস", target: "how-it-works" },
+  { label: "আমাদের সার্ভিস দেখুন", target: "video-showcase" },
   { label: "মূল্য", target: "pricing" },
   { label: "রিভিউ", target: "testimonials" },
   { label: "সচরাচর প্রশ্ন", target: "faq" },
