@@ -103,31 +103,20 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
+        {/* Bottom bar */}
         <div className="border-t border-white/10 mt-10 pt-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-lg font-thin font-sans text-accent-foreground">
-            <div className="flex flex-wrap items-center gap-3">
-              
-
-              
-              
-
-              
-            </div>
-
-            <p className="text-lg text-center font-mono font-medium text-primary-foreground my-0 py-0 px-[50px] mx-[24px]">
-              © {new Date().getFullYear()} Purexify সর্বস্বত্ব সংরক্ষিত | Designed & Marketing By{" "}
-              <a
-                href="https://wa.me/8801794035977"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative inline-flex items-center gap-1 text-white/50 font-bold hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all duration-300 group">
-                
-                Marketify
-                <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
-            </p>
-          </div>
+          <p className="text-sm text-white/50 text-center">
+            © {new Date().getFullYear()} Purexify সর্বস্বত্ব সংরক্ষিত | Designed &amp; Marketing By{" "}
+            <a
+              href="https://wa.me/8801794035977"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-white/70 font-semibold hover:text-white transition-colors"
+            >
+              Marketify
+              <ExternalLink className="h-3 w-3" />
+            </a>
+          </p>
         </div>
       </div>
     </footer>);

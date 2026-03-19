@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { HelpCircle, Phone } from "lucide-react";
+import { HelpCircle, Phone, MessageCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -30,50 +30,68 @@ export default function FAQSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--surface-aqua))] to-background" />
 
       <div className="container relative z-10 max-w-3xl">
-        <div className="text-center mb-10">
+        <div className="text-center mb-3">
           <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 rounded-full px-4 py-1.5 mb-3">
-            <HelpCircle className="h-3.5 w-3.5" /> সচরাচর
+            <HelpCircle className="h-3.5 w-3.5" /> সাহায্য দরকার?
           </span>
           <h2 className="text-2xl md:text-4xl font-extrabold text-foreground">
-            সচরাচর <span className="gradient-text">জিজ্ঞাসিত প্রশ্ন</span>
+            সচরাচর জিজ্ঞাসিত <span className="gradient-text">প্রশ্নসমূহ</span>
           </h2>
+          <p className="text-sm text-muted-foreground mt-2">যা জানা দরকার</p>
+        </div>
+
+        {/* Phone + WhatsApp buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
+          <a
+            href="tel:01816390415"
+            className="group inline-flex items-center gap-2.5 bg-card rounded-full border border-border/50 px-6 py-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+          >
+            <span className="relative flex h-8 w-8 items-center justify-center">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/20" />
+              <span className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary/10">
+                <Phone className="h-3.5 w-3.5 text-primary" />
+              </span>
+            </span>
+            <span className="font-bold text-foreground group-hover:text-primary transition-colors">01816-390415</span>
+          </a>
+
+          <a
+            href="https://wa.me/8801816390415"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2.5 bg-emerald-50 rounded-full border border-emerald-200/50 px-6 py-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+          >
+            <span className="relative flex h-8 w-8 items-center justify-center">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/20" />
+              <span className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100">
+                <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
+              </span>
+            </span>
+            <span className="font-bold text-emerald-700 group-hover:text-emerald-800 transition-colors">WhatsApp</span>
+          </a>
         </div>
 
         <Accordion type="single" collapsible className="space-y-3">
-          {faqs.map((faq) => (
+          {faqs.map((faq, index) => (
             <AccordionItem
               key={faq.id}
               value={faq.id}
               className="bg-card rounded-2xl border border-border/50 px-6 shadow-sm hover:shadow-md transition-shadow data-[state=open]:shadow-md data-[state=open]:border-primary/20"
             >
-              <AccordionTrigger className="text-sm font-semibold text-foreground hover:no-underline py-5">
-                {faq.question}
+              <AccordionTrigger className="text-sm font-semibold text-foreground hover:no-underline py-5 gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="flex-shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-full bg-primary text-primary-foreground text-xs font-bold">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  {faq.question}
+                </div>
               </AccordionTrigger>
-              <AccordionContent className="text-sm text-muted-foreground pb-5 leading-relaxed">
+              <AccordionContent className="text-sm text-muted-foreground pb-5 pl-10 leading-relaxed">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
-
-        {/* Phone number with pulse */}
-        <div className="mt-12 flex justify-center">
-          <a
-            href="tel:01816390415"
-            className="group inline-flex items-center gap-3 bg-card rounded-2xl border border-border/50 px-8 py-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
-          >
-            <span className="relative flex h-10 w-10 items-center justify-center">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/25" />
-              <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                <Phone className="h-4 w-4 text-primary" />
-              </span>
-            </span>
-            <div>
-              <p className="text-xs text-muted-foreground">প্রশ্ন আছে? কল করুন</p>
-              <p className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">01816-390415</p>
-            </div>
-          </a>
-        </div>
       </div>
     </section>
   );
