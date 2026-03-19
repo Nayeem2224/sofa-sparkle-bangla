@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Phone } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -27,7 +27,6 @@ export default function FAQSection() {
 
   return (
     <section id="faq" className="relative py-20 overflow-hidden">
-      {/* Gradient background matching reference */}
       <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--surface-aqua))] to-background" />
 
       <div className="container relative z-10 max-w-3xl">
@@ -56,6 +55,25 @@ export default function FAQSection() {
             </AccordionItem>
           ))}
         </Accordion>
+
+        {/* Phone number with pulse */}
+        <div className="mt-12 flex justify-center">
+          <a
+            href="tel:01816390415"
+            className="group inline-flex items-center gap-3 bg-card rounded-2xl border border-border/50 px-8 py-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+          >
+            <span className="relative flex h-10 w-10 items-center justify-center">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/25" />
+              <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                <Phone className="h-4 w-4 text-primary" />
+              </span>
+            </span>
+            <div>
+              <p className="text-xs text-muted-foreground">প্রশ্ন আছে? কল করুন</p>
+              <p className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">01816-390415</p>
+            </div>
+          </a>
+        </div>
       </div>
     </section>
   );
