@@ -70,6 +70,7 @@ export default function Index() {
       <div className="min-h-screen">
         <MarqueeBanner />
         <Navbar />
+        <SpecialOfferBanner />
         <HeroSection />
         <PainSection />
         <HowItWorksSection />
