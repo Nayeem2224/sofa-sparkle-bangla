@@ -24,15 +24,23 @@ import {
   Loader2,
   Gift,
   Users,
+  Bell,
+  Star,
+  HelpCircle,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
   { title: "ড্যাশবোর্ড", url: "/admin", icon: LayoutDashboard },
   { title: "বুকিংসমূহ", url: "/admin/bookings", icon: CalendarCheck },
+  { title: "ফলো-আপ", url: "/admin/follow-ups", icon: Bell },
   { title: "প্যাকেজসমূহ", url: "/admin/packages", icon: Package },
   { title: "অ্যাড-অনসমূহ", url: "/admin/addons", icon: Gift },
   { title: "টাইম স্লট", url: "/admin/time-slots", icon: Clock },
+  { title: "টেস্টিমোনিয়াল", url: "/admin/testimonials", icon: Star },
+  { title: "FAQ", url: "/admin/faqs", icon: HelpCircle },
+  { title: "মার্কেটিং", url: "/admin/marketing", icon: BarChart3 },
   { title: "অ্যাডমিন", url: "/admin/admins", icon: Users },
   { title: "সাইট সেটিংস", url: "/admin/settings", icon: Settings },
 ];

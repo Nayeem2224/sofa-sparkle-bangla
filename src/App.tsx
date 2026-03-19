@@ -16,6 +16,10 @@ import AddonManagement from "./pages/admin/AddonManagement.tsx";
 import TimeSlotManagement from "./pages/admin/TimeSlotManagement.tsx";
 import SiteSettings from "./pages/admin/SiteSettings.tsx";
 import AdminManagement from "./pages/admin/AdminManagement.tsx";
+import FollowUpManagement from "./pages/admin/FollowUpManagement.tsx";
+import TestimonialManagement from "./pages/admin/TestimonialManagement.tsx";
+import FAQManagement from "./pages/admin/FAQManagement.tsx";
+import MarketingSettings from "./pages/admin/MarketingSettings.tsx";
 
 const queryClient = new QueryClient();
 
@@ -33,9 +37,13 @@ const App = () => (
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="bookings" element={<BookingManagement />} />
+              <Route path="follow-ups" element={<FollowUpManagement />} />
               <Route path="packages" element={<PackageManagement />} />
               <Route path="addons" element={<AddonManagement />} />
               <Route path="time-slots" element={<TimeSlotManagement />} />
+              <Route path="testimonials" element={<TestimonialManagement />} />
+              <Route path="faqs" element={<FAQManagement />} />
+              <Route path="marketing" element={<MarketingSettings />} />
               <Route path="settings" element={<SiteSettings />} />
               <Route path="admins" element={<AdminManagement />} />
             </Route>
