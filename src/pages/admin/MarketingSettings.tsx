@@ -12,10 +12,12 @@ import { Save, Loader2, BarChart3, Code, Server, Tag, Globe, Zap } from "lucide-
 
 const MARKETING_KEYS = [
   // Meta Pixel & Conversion API
-  { key: "meta_pixel_id", label: "Meta Pixel ID", icon: BarChart3, desc: "Facebook/Meta Pixel ট্র্যাকিং আইডি", category: "meta" },
+  { key: "meta_pixel_id", label: "Meta Pixel ID", icon: BarChart3, desc: "Facebook/Meta Pixel ট্র্যাকিং আইডি (যেমন: 123456789)", category: "meta" },
   { key: "meta_access_token", label: "Meta Access Token", icon: Code, desc: "Conversions API এর জন্য অ্যাক্সেস টোকেন", category: "meta" },
   { key: "meta_test_code", label: "Meta Test Event Code", icon: Tag, desc: "টেস্ট ইভেন্ট কোড (ডিবাগিং এর জন্য)", category: "meta" },
-  { key: "conversion_api_enabled", label: "Conversion API Enabled", icon: Zap, desc: "Meta Conversion API চালু করুন", category: "meta", isToggle: true },
+  { key: "conversion_api_enabled", label: "Conversion API Enabled", icon: Zap, desc: "Meta Conversion API (সার্ভার সাইড) চালু করুন", category: "meta", isToggle: true },
+  // GA4
+  { key: "ga4_measurement_id", label: "GA4 Measurement ID", icon: BarChart3, desc: "Google Analytics 4 Measurement ID (G-XXXXXXXXXX)", category: "ga4" },
   // GTM
   { key: "gtm_container_id", label: "GTM Container ID", icon: Code, desc: "Google Tag Manager কন্টেইনার আইডি (GTM-XXXXXXX)", category: "gtm" },
   { key: "gtm_server_url", label: "GTM Server-side URL", icon: Server, desc: "সার্ভার সাইড GTM কন্টেইনার URL", category: "gtm" },
