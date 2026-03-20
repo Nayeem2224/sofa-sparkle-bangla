@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSiteSettings } from "@/hooks/use-landing-data";
+import { injectMetaPixel, injectGA4, injectGTM } from "@/lib/pixel";
 import MarqueeBanner from "@/components/landing/MarqueeBanner";
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
@@ -17,40 +19,17 @@ import Footer from "@/components/landing/Footer";
 import FloatingWhatsApp from "@/components/landing/FloatingWhatsApp";
 import LiveBookingNotification from "@/components/landing/LiveBookingNotification";
 
-function MetaPixelHead() {
+function TrackingScripts() {
   const { data: settings } = useSiteSettings();
-  const pixelId = settings?.meta_pixel_id;
-  const gtmId = settings?.gtm_container_id;
 
-  if (!pixelId && !gtmId) return null;
+  useEffect(() => {
+    if (!settings) return;
+    if (settings.meta_pixel_id) injectMetaPixel(settings.meta_pixel_id);
+    if (settings.ga4_measurement_id) injectGA4(settings.ga4_measurement_id);
+    if (settings.gtm_container_id) injectGTM(settings.gtm_container_id);
+  }, [settings]);
 
-  return (
-    <Helmet>
-      {pixelId && (
-        <script>{`
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '${pixelId}');
-          fbq('track', 'PageView');
-        `}</script>
-      )}
-      {gtmId && (
-        <script>{`
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','${gtmId}');
-        `}</script>
-      )}
-    </Helmet>
-  );
+  return null;
 }
 
 export default function Index() {
@@ -63,7 +42,7 @@ export default function Index() {
         <meta property="og:description" content="ঢাকায় ঘরে বসেই প্রফেশনাল সোফা ক্লিনিং। এখনই বুক করুন!" />
         <meta property="og:type" content="website" />
       </Helmet>
-      <MetaPixelHead />
+      <TrackingScripts />
       <div className="min-h-screen">
         <MarqueeBanner />
         <Navbar />

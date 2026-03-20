@@ -13,7 +13,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { useSiteSettings, usePackages, useAddOns, useTimeSlots } from "@/hooks/use-landing-data";
-import { calculatePricing, createBooking, type AddonItem } from "@/lib/api";
+import { calculatePricing, createBooking, trackServerEvent, type AddonItem } from "@/lib/api";
 import { DHAKA_AREAS } from "@/lib/districts";
 
 interface FormErrors {
@@ -117,6 +117,9 @@ export default function BookingForm() {
 
       pixelPurchase({ value: pricing.grandTotal, content_name: selectedPackage?.name, order_id: result.bookingId });
       pixelSchedule();
+      // Server-side tracking (CAPI + GA4)
+      trackServerEvent("Purchase", { value: pricing.grandTotal, currency: "BDT", content_name: selectedPackage?.name, order_id: result.bookingId });
+      trackServerEvent("Schedule");
       navigate(`/confirmation?id=${result.bookingId}&token=${result.accessToken}`);
     } catch (err: any) {
       const msg = err?.message || "";

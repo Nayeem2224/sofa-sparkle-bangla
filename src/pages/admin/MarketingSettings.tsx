@@ -12,10 +12,12 @@ import { Save, Loader2, BarChart3, Code, Server, Tag, Globe, Zap } from "lucide-
 
 const MARKETING_KEYS = [
   // Meta Pixel & Conversion API
-  { key: "meta_pixel_id", label: "Meta Pixel ID", icon: BarChart3, desc: "Facebook/Meta Pixel ট্র্যাকিং আইডি", category: "meta" },
+  { key: "meta_pixel_id", label: "Meta Pixel ID", icon: BarChart3, desc: "Facebook/Meta Pixel ট্র্যাকিং আইডি (যেমন: 123456789)", category: "meta" },
   { key: "meta_access_token", label: "Meta Access Token", icon: Code, desc: "Conversions API এর জন্য অ্যাক্সেস টোকেন", category: "meta" },
   { key: "meta_test_code", label: "Meta Test Event Code", icon: Tag, desc: "টেস্ট ইভেন্ট কোড (ডিবাগিং এর জন্য)", category: "meta" },
-  { key: "conversion_api_enabled", label: "Conversion API Enabled", icon: Zap, desc: "Meta Conversion API চালু করুন", category: "meta", isToggle: true },
+  { key: "conversion_api_enabled", label: "Conversion API Enabled", icon: Zap, desc: "Meta Conversion API (সার্ভার সাইড) চালু করুন", category: "meta", isToggle: true },
+  // GA4
+  { key: "ga4_measurement_id", label: "GA4 Measurement ID", icon: BarChart3, desc: "Google Analytics 4 Measurement ID (G-XXXXXXXXXX)", category: "ga4" },
   // GTM
   { key: "gtm_container_id", label: "GTM Container ID", icon: Code, desc: "Google Tag Manager কন্টেইনার আইডি (GTM-XXXXXXX)", category: "gtm" },
   { key: "gtm_server_url", label: "GTM Server-side URL", icon: Server, desc: "সার্ভার সাইড GTM কন্টেইনার URL", category: "gtm" },
@@ -102,6 +104,7 @@ export default function MarketingSettings() {
   };
 
   const metaFields = MARKETING_KEYS.filter((k) => k.category === "meta");
+  const ga4Fields = MARKETING_KEYS.filter((k) => k.category === "ga4");
   const gtmFields = MARKETING_KEYS.filter((k) => k.category === "gtm");
   const serverFields = MARKETING_KEYS.filter((k) => k.category === "server");
 
@@ -123,6 +126,7 @@ export default function MarketingSettings() {
       <Tabs defaultValue="meta" className="w-full">
         <TabsList className="rounded-xl">
           <TabsTrigger value="meta" className="rounded-lg">Meta Pixel & CAPI</TabsTrigger>
+          <TabsTrigger value="ga4" className="rounded-lg">GA4</TabsTrigger>
           <TabsTrigger value="gtm" className="rounded-lg">GTM</TabsTrigger>
           <TabsTrigger value="server" className="rounded-lg">Server-Side</TabsTrigger>
         </TabsList>
@@ -137,6 +141,20 @@ export default function MarketingSettings() {
             </CardHeader>
             <CardContent className="space-y-5">
               {metaFields.map((mk) => <div key={mk.key}>{renderField(mk)}</div>)}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="ga4">
+          <Card className="rounded-2xl border-border/50">
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <BarChart3 className="h-5 w-5 text-primary" /> Google Analytics 4
+              </CardTitle>
+              <CardDescription>GA4 Measurement ID কনফিগার করুন। ক্লায়েন্ট সাইড gtag.js অটো লোড হবে।</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              {ga4Fields.map((mk) => <div key={mk.key}>{renderField(mk)}</div>)}
             </CardContent>
           </Card>
         </TabsContent>
