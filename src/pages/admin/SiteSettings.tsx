@@ -120,7 +120,7 @@ export default function SiteSettings() {
   // Get all categorized keys
   const categorizedKeys = new Set(CATEGORIES.flatMap((c) => c.keys));
   // Uncategorized keys (not in any category and not marketing keys)
-  const marketingKeys = ["meta_pixel_id", "meta_access_token", "meta_test_code", "gtm_container_id", "server_side_api_url", "conversion_api_enabled", "gtm_server_url"];
+  const marketingKeys = ["meta_pixel_id", "meta_access_token", "meta_test_code", "gtm_container_id", "server_side_api_url", "conversion_api_enabled", "gtm_server_url", "ga4_measurement_id"];
   const uncategorized = settings?.filter((s) => !categorizedKeys.has(s.key) && !marketingKeys.includes(s.key)) || [];
 
   return (

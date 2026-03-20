@@ -150,3 +150,27 @@ export function calculatePricing(
   const grandTotal = basePrice + addonsTotal + surcharge;
   return { basePrice, addonsTotal, surcharge, grandTotal };
 }
+
+// Server-side event tracking (fires to CAPI + GA4 via edge function)
+export async function trackServerEvent(eventName: string, customData?: Record<string, any>) {
+  try {
+    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+    if (!projectId) return;
+    
+    await fetch(`https://${projectId}.supabase.co/functions/v1/track-event`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event_name: eventName,
+        event_time: Math.floor(Date.now() / 1000),
+        event_id: crypto.randomUUID(),
+        user_agent: navigator.userAgent,
+        source_url: window.location.href,
+        custom_data: customData,
+      }),
+    });
+  } catch (e) {
+    // Silent fail — don't break UX for tracking
+    console.warn("Server tracking error:", e);
+  }
+}
