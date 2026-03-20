@@ -117,6 +117,9 @@ export default function BookingForm() {
 
       pixelPurchase({ value: pricing.grandTotal, content_name: selectedPackage?.name, order_id: result.bookingId });
       pixelSchedule();
+      // Server-side tracking (CAPI + GA4)
+      trackServerEvent("Purchase", { value: pricing.grandTotal, currency: "BDT", content_name: selectedPackage?.name, order_id: result.bookingId });
+      trackServerEvent("Schedule");
       navigate(`/confirmation?id=${result.bookingId}&token=${result.accessToken}`);
     } catch (err: any) {
       const msg = err?.message || "";
