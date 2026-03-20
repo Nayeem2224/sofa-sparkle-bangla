@@ -126,6 +126,7 @@ export default function MarketingSettings() {
       <Tabs defaultValue="meta" className="w-full">
         <TabsList className="rounded-xl">
           <TabsTrigger value="meta" className="rounded-lg">Meta Pixel & CAPI</TabsTrigger>
+          <TabsTrigger value="ga4" className="rounded-lg">GA4</TabsTrigger>
           <TabsTrigger value="gtm" className="rounded-lg">GTM</TabsTrigger>
           <TabsTrigger value="server" className="rounded-lg">Server-Side</TabsTrigger>
         </TabsList>
