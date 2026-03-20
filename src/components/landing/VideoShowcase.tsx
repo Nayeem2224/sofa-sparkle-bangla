@@ -3,6 +3,40 @@ import { supabase } from "@/integrations/supabase/client";
 import { Play, Video } from "lucide-react";
 import { useState } from "react";
 
+/**
+ * Convert various video URLs to embeddable format:
+ * - YouTube: youtube.com/watch?v=ID → youtube.com/embed/ID
+ * - YouTube short: youtu.be/ID → youtube.com/embed/ID
+ * - Facebook: fb.watch/xxx or facebook.com/...video... → facebook embed
+ * - Already embed URLs pass through
+ */
+function toEmbedUrl(url: string): string {
+  if (!url) return url;
+
+  // Already an embed URL
+  if (url.includes("/embed")) return url;
+
+  // YouTube watch URL
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+
+  // Facebook video URL — use Facebook's embedded video player
+  if (url.includes("facebook.com") || url.includes("fb.watch") || url.includes("fb.com")) {
+    const encoded = encodeURIComponent(url);
+    return `https://www.facebook.com/plugins/video.php?href=${encoded}&show_text=false&width=560`;
+  }
+
+  return url;
+}
+
+function isYouTube(url: string): boolean {
+  return url.includes("youtube.com") || url.includes("youtu.be");
+}
+
+function isFacebook(url: string): boolean {
+  return url.includes("facebook.com") || url.includes("fb.watch") || url.com?.includes("fb.com") || url.includes("plugins/video.php");
+}
+
 export default function VideoShowcase() {
   const { data: videos } = useQuery({
     queryKey: ["showcase-videos"],
@@ -23,6 +57,7 @@ export default function VideoShowcase() {
   if (!videos || videos.length === 0) return null;
 
   const current = videos[activeVideo];
+  const embedUrl = toEmbedUrl(current.video_url);
 
   return (
     <section id="video-showcase" className="bg-surface-grey py-16 md:py-24 relative overflow-hidden">
@@ -44,10 +79,10 @@ export default function VideoShowcase() {
           {/* Main video player */}
           <div className="relative rounded-3xl overflow-hidden shadow-elevated border border-border/30 bg-foreground/5 aspect-video">
             <iframe
-              src={current.video_url}
+              src={embedUrl}
               title={current.title}
               className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />
           </div>
