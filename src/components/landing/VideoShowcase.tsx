@@ -34,7 +34,7 @@ function isYouTube(url: string): boolean {
 }
 
 function isFacebook(url: string): boolean {
-  return url.includes("facebook.com") || url.includes("fb.watch") || url.com?.includes("fb.com") || url.includes("plugins/video.php");
+  return url.includes("facebook.com") || url.includes("fb.watch") || url.includes("fb.com") || url.includes("plugins/video.php");
 }
 
 export default function VideoShowcase() {
