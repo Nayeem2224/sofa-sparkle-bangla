@@ -104,6 +104,7 @@ export default function MarketingSettings() {
   };
 
   const metaFields = MARKETING_KEYS.filter((k) => k.category === "meta");
+  const ga4Fields = MARKETING_KEYS.filter((k) => k.category === "ga4");
   const gtmFields = MARKETING_KEYS.filter((k) => k.category === "gtm");
   const serverFields = MARKETING_KEYS.filter((k) => k.category === "server");
 
