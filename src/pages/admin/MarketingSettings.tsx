@@ -145,6 +145,20 @@ export default function MarketingSettings() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="ga4">
+          <Card className="rounded-2xl border-border/50">
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <BarChart3 className="h-5 w-5 text-primary" /> Google Analytics 4
+              </CardTitle>
+              <CardDescription>GA4 Measurement ID কনফিগার করুন। ক্লায়েন্ট সাইড gtag.js অটো লোড হবে।</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              {ga4Fields.map((mk) => <div key={mk.key}>{renderField(mk)}</div>)}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="gtm">
           <Card className="rounded-2xl border-border/50">
             <CardHeader>
