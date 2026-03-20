@@ -13,7 +13,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { useSiteSettings, usePackages, useAddOns, useTimeSlots } from "@/hooks/use-landing-data";
-import { calculatePricing, createBooking, type AddonItem } from "@/lib/api";
+import { calculatePricing, createBooking, trackServerEvent, type AddonItem } from "@/lib/api";
 import { DHAKA_AREAS } from "@/lib/districts";
 
 interface FormErrors {
