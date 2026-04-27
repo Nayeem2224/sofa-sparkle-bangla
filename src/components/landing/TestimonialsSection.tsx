@@ -36,7 +36,6 @@ export default function TestimonialsSection() {
 
   const itemsPerPage = isMobile ? 1 : 3;
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  const currentItems = filtered.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   // Reset page when category changes
   useEffect(() => { setCurrentPage(0); }, [activeCategory]);
@@ -114,46 +113,62 @@ export default function TestimonialsSection() {
             </>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {currentItems.map((t) => (
-              <div
-                key={t.id}
-                className="group relative bg-card rounded-2xl p-6 sm:p-7 border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500"
-              >
-                {/* Quote icon */}
-                <div className="absolute top-5 right-5">
-                  <Quote className="h-8 w-8 text-primary/15 group-hover:text-primary/25 transition-colors duration-300" />
-                </div>
+          {/* Sliding carousel viewport */}
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{ transform: `translateX(-${currentPage * 100}%)` }}
+            >
+              {Array.from({ length: totalPages }).map((_, pageIdx) => {
+                const pageItems = filtered.slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage);
+                return (
+                  <div
+                    key={pageIdx}
+                    className="w-full flex-shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-1"
+                  >
+                    {pageItems.map((t: any) => (
+                      <div
+                        key={t.id}
+                        className="group relative bg-card rounded-2xl p-6 sm:p-7 border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500"
+                      >
+                        {/* Quote icon */}
+                        <div className="absolute top-5 right-5">
+                          <Quote className="h-8 w-8 text-primary/15 group-hover:text-primary/25 transition-colors duration-300" />
+                        </div>
 
-                {/* Stars */}
-                <div className="flex gap-0.5 mb-4">
-                  {Array.from({ length: 5 }).map((_, j) => (
-                    <Star
-                      key={j}
-                      className={`h-4 w-4 ${j < t.rating ? "text-accent fill-accent" : "text-muted-foreground/20"}`}
-                    />
-                  ))}
-                </div>
+                        {/* Stars */}
+                        <div className="flex gap-0.5 mb-4">
+                          {Array.from({ length: 5 }).map((_, j) => (
+                            <Star
+                              key={j}
+                              className={`h-4 w-4 ${j < t.rating ? "text-accent fill-accent" : "text-muted-foreground/20"}`}
+                            />
+                          ))}
+                        </div>
 
-                {/* Review text */}
-                <p className="text-sm sm:text-[15px] text-foreground/80 leading-relaxed mb-6 line-clamp-4">
-                  "{t.review}"
-                </p>
+                        {/* Review text */}
+                        <p className="text-sm sm:text-[15px] text-foreground/80 leading-relaxed mb-6 line-clamp-4">
+                          "{t.review}"
+                        </p>
 
-                {/* Customer info */}
-                <div className="flex items-center gap-3 pt-4 border-t border-border/40">
-                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-md">
-                    <span className="text-sm font-bold text-primary-foreground">
-                      {t.customer_name.charAt(0)}
-                    </span>
+                        {/* Customer info */}
+                        <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-md">
+                            <span className="text-sm font-bold text-primary-foreground">
+                              {t.customer_name.charAt(0)}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-bold text-sm text-foreground">{t.customer_name}</p>
+                            <p className="text-xs text-muted-foreground">{t.location}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div>
-                    <p className="font-bold text-sm text-foreground">{t.customer_name}</p>
-                    <p className="text-xs text-muted-foreground">{t.location}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
         </div>
 
