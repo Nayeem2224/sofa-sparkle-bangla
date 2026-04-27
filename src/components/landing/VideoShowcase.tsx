@@ -38,14 +38,27 @@ function isFacebook(url: string): boolean {
 }
 
 /**
- * Get YouTube video thumbnail URL from any YouTube video URL.
- * Returns null for non-YouTube URLs (e.g. Facebook).
+ * Get YouTube video ID from any YouTube URL.
  */
-function getYouTubeThumbnail(url: string): string | null {
+function getYouTubeId(url: string): string | null {
   if (!url) return null;
-  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+)/);
-  if (!match) return null;
-  return `https://i.ytimg.com/vi/${match[1]}/hqdefault.jpg`;
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]+)/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Auto-derive a thumbnail from the video URL itself.
+ * - YouTube: i.ytimg.com (mqdefault is always available)
+ * - Facebook: graph.facebook.com picture endpoint (works for public videos)
+ */
+function getAutoThumbnail(url: string): string | null {
+  if (!url) return null;
+  const ytId = getYouTubeId(url);
+  if (ytId) return `https://i.ytimg.com/vi/${ytId}/mqdefault.jpg`;
+  if (isFacebook(url)) {
+    return `https://graph.facebook.com/v18.0/?id=${encodeURIComponent(url)}&fields=image&access_token=`;
+  }
+  return null;
 }
 
 export default function VideoShowcase() {
