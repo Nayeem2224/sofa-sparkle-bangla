@@ -37,6 +37,17 @@ function isFacebook(url: string): boolean {
   return url.includes("facebook.com") || url.includes("fb.watch") || url.includes("fb.com") || url.includes("plugins/video.php");
 }
 
+/**
+ * Get YouTube video thumbnail URL from any YouTube video URL.
+ * Returns null for non-YouTube URLs (e.g. Facebook).
+ */
+function getYouTubeThumbnail(url: string): string | null {
+  if (!url) return null;
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+)/);
+  if (!match) return null;
+  return `https://i.ytimg.com/vi/${match[1]}/hqdefault.jpg`;
+}
+
 export default function VideoShowcase() {
   const { data: videos } = useQuery({
     queryKey: ["showcase-videos"],
@@ -98,24 +109,56 @@ export default function VideoShowcase() {
           {/* Video selector thumbnails */}
           {videos.length > 1 && (
             <div className="flex justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
-              {videos.map((v: any, i: number) => (
-                <button
-                  key={v.id}
-                  onClick={() => setActiveVideo(i)}
-                  className={`group relative flex-1 max-w-[200px] rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
-                    activeVideo === i
-                      ? "border-primary shadow-lg scale-105"
-                      : "border-border/40 hover:border-primary/40 opacity-70 hover:opacity-100"
-                  }`}
-                >
-                  <div className="aspect-video bg-muted flex items-center justify-center">
-                    <Play className={`h-6 w-6 ${activeVideo === i ? "text-primary" : "text-muted-foreground"}`} />
-                  </div>
-                  <div className="p-2 bg-card">
-                    <p className="text-xs font-semibold text-foreground truncate">{v.title}</p>
-                  </div>
-                </button>
-              ))}
+              {videos.map((v: any, i: number) => {
+                const ytThumb = getYouTubeThumbnail(v.video_url);
+                const thumbSrc = v.thumbnail_url || ytThumb;
+                const isFb = isFacebook(v.video_url);
+                return (
+                  <button
+                    key={v.id}
+                    onClick={() => setActiveVideo(i)}
+                    className={`group relative flex-1 max-w-[200px] rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
+                      activeVideo === i
+                        ? "border-primary shadow-lg scale-105"
+                        : "border-border/40 hover:border-primary/40 opacity-70 hover:opacity-100"
+                    }`}
+                  >
+                    <div className="relative aspect-video bg-muted overflow-hidden">
+                      {thumbSrc ? (
+                        <img
+                          src={thumbSrc}
+                          alt={v.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).style.display = "none";
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                          <Video className="h-8 w-8 text-primary/40" />
+                        </div>
+                      )}
+                      {/* Play overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-foreground/20 group-hover:bg-foreground/10 transition-colors">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg ${
+                          activeVideo === i ? "bg-primary" : "bg-card/90"
+                        }`}>
+                          <Play className={`h-4 w-4 ml-0.5 ${activeVideo === i ? "text-primary-foreground fill-current" : "text-foreground fill-current"}`} />
+                        </div>
+                      </div>
+                      {isFb && (
+                        <span className="absolute top-1.5 left-1.5 text-[9px] font-bold bg-foreground/70 text-background px-1.5 py-0.5 rounded">
+                          FB
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-2 bg-card">
+                      <p className="text-xs font-semibold text-foreground truncate">{v.title}</p>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>

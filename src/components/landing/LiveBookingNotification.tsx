@@ -84,7 +84,7 @@ export default function LiveBookingNotification() {
         timeoutRef.current = setTimeout(() => {
           setVisible(false);
         }, 6000);
-      }, 4000); // Gap between notifications
+      }, 2000); // Gap between notifications
 
       return () => clearTimeout(delay);
     }
