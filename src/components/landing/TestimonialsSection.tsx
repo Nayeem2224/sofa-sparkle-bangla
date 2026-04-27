@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Star, Quote } from "lucide-react";
 
 export default function TestimonialsSection() {
-  const isMobile = useIsMobile();
   const { data: testimonials } = useQuery({
     queryKey: ["public-testimonials"],
     queryFn: async () => {
@@ -26,28 +24,12 @@ export default function TestimonialsSection() {
     : ["সবগুলো"];
 
   const [activeCategory, setActiveCategory] = useState("সবগুলো");
-  const [currentPage, setCurrentPage] = useState(0);
 
   const filtered = testimonials
     ? activeCategory === "সবগুলো"
       ? testimonials
       : testimonials.filter((t: any) => (t.category || "general") === activeCategory)
     : [];
-
-  const itemsPerPage = isMobile ? 1 : 3;
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-
-  // Reset page when category changes
-  useEffect(() => { setCurrentPage(0); }, [activeCategory]);
-
-  // Auto-slide
-  useEffect(() => {
-    if (totalPages <= 1) return;
-    const timer = setInterval(() => {
-      setCurrentPage((p) => (p + 1) % totalPages);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [totalPages]);
 
   const categoryLabelMap: Record<string, string> = {
     general: "সাধারণ",
@@ -60,14 +42,19 @@ export default function TestimonialsSection() {
 
   if (!testimonials || testimonials.length === 0) return null;
 
+  // Duplicate items for seamless infinite loop
+  const loopItems = [...filtered, ...filtered];
+  // Speed scales with item count so it feels consistent
+  const durationSec = Math.max(30, filtered.length * 7);
+
   return (
     <section id="testimonials" className="bg-muted/40 py-16 md:py-24 relative overflow-hidden">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
 
-      <div className="container relative z-10 px-4">
+      <div className="relative z-10">
         {/* Header */}
-        <div className="text-center mb-10 md:mb-14">
+        <div className="container px-4 text-center mb-10 md:mb-14">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-foreground leading-tight">
             গ্রাহকদের <span className="gradient-text font-extrabold">মতামত</span>
           </h2>
@@ -76,7 +63,7 @@ export default function TestimonialsSection() {
 
         {/* Category filters */}
         {categories.length > 2 && (
-          <div className="flex flex-wrap justify-center gap-2 mb-8 md:mb-10">
+          <div className="container px-4 flex flex-wrap justify-center gap-2 mb-8 md:mb-10">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -93,101 +80,58 @@ export default function TestimonialsSection() {
           </div>
         )}
 
-        {/* Testimonial cards */}
-        <div className="relative max-w-6xl mx-auto">
-          {/* Navigation arrows - desktop */}
-          {totalPages > 1 && (
-            <>
-              <button
-                onClick={() => setCurrentPage((p) => (p - 1 + totalPages) % totalPages)}
-                className="hidden md:flex absolute -left-12 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-card border border-border shadow-sm hover:shadow-md hover:border-primary/40 transition-all z-20"
+        {/* Continuously scrolling reviews — full-bleed marquee */}
+        <div className="review-fade-mask overflow-hidden py-2">
+          <div
+            key={activeCategory /* restart loop on filter change */}
+            className="flex w-max gap-4 sm:gap-6 animate-review-scroll"
+            style={{ animationDuration: `${durationSec}s` }}
+          >
+            {loopItems.map((t: any, idx: number) => (
+              <div
+                key={`${t.id}-${idx}`}
+                className="group relative bg-card rounded-2xl p-6 sm:p-7 border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-primary/40 transition-all duration-500 w-[280px] sm:w-[340px] md:w-[380px] flex-shrink-0"
               >
-                <ChevronLeft className="h-5 w-5 text-foreground" />
-              </button>
-              <button
-                onClick={() => setCurrentPage((p) => (p + 1) % totalPages)}
-                className="hidden md:flex absolute -right-12 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-card border border-border shadow-sm hover:shadow-md hover:border-primary/40 transition-all z-20"
-              >
-                <ChevronRight className="h-5 w-5 text-foreground" />
-              </button>
-            </>
-          )}
+                {/* Quote icon */}
+                <div className="absolute top-5 right-5">
+                  <Quote className="h-8 w-8 text-primary/15 group-hover:text-primary/30 transition-colors duration-300" />
+                </div>
 
-          {/* Sliding carousel viewport */}
-          <div className="overflow-hidden">
-            <div
-              className="flex transition-transform duration-700 ease-in-out"
-              style={{ transform: `translateX(-${currentPage * 100}%)` }}
-            >
-              {Array.from({ length: totalPages }).map((_, pageIdx) => {
-                const pageItems = filtered.slice(pageIdx * itemsPerPage, (pageIdx + 1) * itemsPerPage);
-                return (
-                  <div
-                    key={pageIdx}
-                    className="w-full flex-shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-1"
-                  >
-                    {pageItems.map((t: any) => (
-                      <div
-                        key={t.id}
-                        className="group relative bg-card rounded-2xl p-6 sm:p-7 border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500"
-                      >
-                        {/* Quote icon */}
-                        <div className="absolute top-5 right-5">
-                          <Quote className="h-8 w-8 text-primary/15 group-hover:text-primary/25 transition-colors duration-300" />
-                        </div>
+                {/* Stars */}
+                <div className="flex gap-0.5 mb-4">
+                  {Array.from({ length: 5 }).map((_, j) => (
+                    <Star
+                      key={j}
+                      className={`h-4 w-4 ${j < t.rating ? "text-accent fill-accent" : "text-muted-foreground/20"}`}
+                    />
+                  ))}
+                </div>
 
-                        {/* Stars */}
-                        <div className="flex gap-0.5 mb-4">
-                          {Array.from({ length: 5 }).map((_, j) => (
-                            <Star
-                              key={j}
-                              className={`h-4 w-4 ${j < t.rating ? "text-accent fill-accent" : "text-muted-foreground/20"}`}
-                            />
-                          ))}
-                        </div>
+                {/* Review text */}
+                <p className="text-sm sm:text-[15px] text-foreground/80 leading-relaxed mb-6 line-clamp-4 min-h-[80px]">
+                  "{t.review}"
+                </p>
 
-                        {/* Review text */}
-                        <p className="text-sm sm:text-[15px] text-foreground/80 leading-relaxed mb-6 line-clamp-4">
-                          "{t.review}"
-                        </p>
-
-                        {/* Customer info */}
-                        <div className="flex items-center gap-3 pt-4 border-t border-border/40">
-                          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-md">
-                            <span className="text-sm font-bold text-primary-foreground">
-                              {t.customer_name.charAt(0)}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="font-bold text-sm text-foreground">{t.customer_name}</p>
-                            <p className="text-xs text-muted-foreground">{t.location}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                {/* Customer info */}
+                <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-md">
+                    <span className="text-sm font-bold text-primary-foreground">
+                      {t.customer_name.charAt(0)}
+                    </span>
                   </div>
-                );
-              })}
-            </div>
+                  <div className="min-w-0">
+                    <p className="font-bold text-sm text-foreground truncate">{t.customer_name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{t.location}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Pagination dots */}
-        {totalPages > 1 && (
-          <div className="flex justify-center gap-2 mt-8 md:mt-10">
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentPage(i)}
-                className={`rounded-full transition-all duration-300 ${
-                  currentPage === i
-                    ? "w-8 h-2.5 bg-primary"
-                    : "w-2.5 h-2.5 bg-muted-foreground/25 hover:bg-muted-foreground/40"
-                }`}
-              />
-            ))}
-          </div>
-        )}
+        <p className="text-center text-[11px] text-muted-foreground/60 mt-4">
+          মাউস হোভার করলে স্ক্রল থেমে যাবে
+        </p>
       </div>
     </section>
   );
