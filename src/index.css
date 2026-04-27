@@ -205,3 +205,24 @@
 .animate-marquee {
   animation: marquee 20s linear infinite;
 }
+
+/* Continuous review scroll (used in TestimonialsSection) */
+@keyframes review-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-review-scroll {
+  animation: review-scroll 40s linear infinite;
+  will-change: transform;
+}
+
+.animate-review-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Edge fade mask for marquee containers */
+.review-fade-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
