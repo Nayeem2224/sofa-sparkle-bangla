@@ -123,8 +123,8 @@ export default function VideoShowcase() {
           {videos.length > 1 && (
             <div className="flex justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
               {videos.map((v: any, i: number) => {
-                const ytThumb = getYouTubeThumbnail(v.video_url);
-                const thumbSrc = v.thumbnail_url || ytThumb;
+                const autoThumb = getAutoThumbnail(v.video_url);
+                const thumbSrc = v.thumbnail_url || autoThumb;
                 const isFb = isFacebook(v.video_url);
                 return (
                   <button
