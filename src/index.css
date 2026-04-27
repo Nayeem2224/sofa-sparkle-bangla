@@ -221,6 +221,21 @@
   animation-play-state: paused;
 }
 
+/* Reverse direction (right to left → left to right) */
+@keyframes review-scroll-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-review-scroll-reverse {
+  animation: review-scroll-reverse 40s linear infinite;
+  will-change: transform;
+}
+
+.animate-review-scroll-reverse:hover {
+  animation-play-state: paused;
+}
+
 /* Edge fade mask for marquee containers */
 .review-fade-mask {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);

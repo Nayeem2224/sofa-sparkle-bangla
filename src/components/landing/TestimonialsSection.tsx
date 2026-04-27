@@ -42,10 +42,54 @@ export default function TestimonialsSection() {
 
   if (!testimonials || testimonials.length === 0) return null;
 
-  // Duplicate items for seamless infinite loop
-  const loopItems = [...filtered, ...filtered];
+  // Split into two rows for the dual-direction scroll
+  const midpoint = Math.ceil(filtered.length / 2);
+  const rowA = filtered.slice(0, midpoint);
+  const rowB = filtered.slice(midpoint).length > 0 ? filtered.slice(midpoint) : filtered;
+
+  // Duplicate each row for seamless infinite loop
+  const loopA = [...rowA, ...rowA];
+  const loopB = [...rowB, ...rowB];
+
   // Speed scales with item count so it feels consistent
-  const durationSec = Math.max(30, filtered.length * 7);
+  const durationA = Math.max(30, rowA.length * 8);
+  const durationB = Math.max(30, rowB.length * 8);
+
+  const renderCard = (t: any, idx: number) => (
+    <div
+      key={`${t.id}-${idx}`}
+      className="group relative bg-card rounded-2xl p-6 sm:p-7 border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-primary/40 transition-all duration-500 w-[280px] sm:w-[340px] md:w-[380px] flex-shrink-0"
+    >
+      <div className="absolute top-5 right-5">
+        <Quote className="h-8 w-8 text-primary/15 group-hover:text-primary/30 transition-colors duration-300" />
+      </div>
+
+      <div className="flex gap-0.5 mb-4">
+        {Array.from({ length: 5 }).map((_, j) => (
+          <Star
+            key={j}
+            className={`h-4 w-4 ${j < t.rating ? "text-accent fill-accent" : "text-muted-foreground/20"}`}
+          />
+        ))}
+      </div>
+
+      <p className="text-sm sm:text-[15px] text-foreground/80 leading-relaxed mb-6 line-clamp-4 min-h-[80px]">
+        "{t.review}"
+      </p>
+
+      <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-md">
+          <span className="text-sm font-bold text-primary-foreground">
+            {t.customer_name.charAt(0)}
+          </span>
+        </div>
+        <div className="min-w-0">
+          <p className="font-bold text-sm text-foreground truncate">{t.customer_name}</p>
+          <p className="text-xs text-muted-foreground truncate">{t.location}</p>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <section id="testimonials" className="bg-muted/40 py-16 md:py-24 relative overflow-hidden">
@@ -80,58 +124,30 @@ export default function TestimonialsSection() {
           </div>
         )}
 
-        {/* Continuously scrolling reviews — full-bleed marquee */}
-        <div className="review-fade-mask overflow-hidden py-2">
-          <div
-            key={activeCategory /* restart loop on filter change */}
-            className="flex w-max gap-4 sm:gap-6 animate-review-scroll"
-            style={{ animationDuration: `${durationSec}s` }}
-          >
-            {loopItems.map((t: any, idx: number) => (
-              <div
-                key={`${t.id}-${idx}`}
-                className="group relative bg-card rounded-2xl p-6 sm:p-7 border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-primary/40 transition-all duration-500 w-[280px] sm:w-[340px] md:w-[380px] flex-shrink-0"
-              >
-                {/* Quote icon */}
-                <div className="absolute top-5 right-5">
-                  <Quote className="h-8 w-8 text-primary/15 group-hover:text-primary/30 transition-colors duration-300" />
-                </div>
+        {/* Dual-row continuously scrolling reviews */}
+        <div className="space-y-4 sm:space-y-6">
+          {/* Row 1 — scrolls right to left */}
+          <div className="review-fade-mask overflow-hidden py-2">
+            <div
+              key={`a-${activeCategory}`}
+              className="flex w-max gap-4 sm:gap-6 animate-review-scroll"
+              style={{ animationDuration: `${durationA}s` }}
+            >
+              {loopA.map((t: any, idx: number) => renderCard(t, idx))}
+            </div>
+          </div>
 
-                {/* Stars */}
-                <div className="flex gap-0.5 mb-4">
-                  {Array.from({ length: 5 }).map((_, j) => (
-                    <Star
-                      key={j}
-                      className={`h-4 w-4 ${j < t.rating ? "text-accent fill-accent" : "text-muted-foreground/20"}`}
-                    />
-                  ))}
-                </div>
-
-                {/* Review text */}
-                <p className="text-sm sm:text-[15px] text-foreground/80 leading-relaxed mb-6 line-clamp-4 min-h-[80px]">
-                  "{t.review}"
-                </p>
-
-                {/* Customer info */}
-                <div className="flex items-center gap-3 pt-4 border-t border-border/40">
-                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-md">
-                    <span className="text-sm font-bold text-primary-foreground">
-                      {t.customer_name.charAt(0)}
-                    </span>
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-bold text-sm text-foreground truncate">{t.customer_name}</p>
-                    <p className="text-xs text-muted-foreground truncate">{t.location}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+          {/* Row 2 — scrolls left to right */}
+          <div className="review-fade-mask overflow-hidden py-2">
+            <div
+              key={`b-${activeCategory}`}
+              className="flex w-max gap-4 sm:gap-6 animate-review-scroll-reverse"
+              style={{ animationDuration: `${durationB}s` }}
+            >
+              {loopB.map((t: any, idx: number) => renderCard(t, idx))}
+            </div>
           </div>
         </div>
-
-        <p className="text-center text-[11px] text-muted-foreground/60 mt-4">
-          মাউস হোভার করলে স্ক্রল থেমে যাবে
-        </p>
       </div>
     </section>
   );
